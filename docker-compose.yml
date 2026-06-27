@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  gotenberg:
+    image: gotenberg/gotenberg:8
+    container_name: pdf_gotenberg
+    ports:
+      - "8081:3000"
+    restart: unless-stopped
+    # Gotenberg no guarda logs de archivos procesados en disco por defecto, lo que garantiza privacidad.
+    # Podemos configurar argumentos adicionales si es necesario, p.ej. desactivar ciertos controladores,
+    # pero la configuración por defecto es ideal para desarrollo y producción local.

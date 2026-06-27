@@ -1,0 +1,89 @@
+================================================================================
+HOJA DE RUTA TECNOLÓGICA: CLON DE ILOVEPDF (SAAS DEMOSTRATIVO)
+================================================================================
+
+Este documento define la planificación estratégica, arquitectura técnica y fases de
+construcción del Clon de ILovePDF. La aplicación sigue un enfoque local-first 
+para maximizar la privacidad del usuario, delegando procesamiento al backend 
+únicamente para conversiones complejas de Office o motores OCR.
+
+--------------------------------------------------------------------------------
+1. ARQUITECTURA TÉCNICA DEL PROYECTO
+--------------------------------------------------------------------------------
+
+┌────────────────────────────────────────────────────────────────────────┐
+│                        CAPA CLIENTE (NAVEGADOR)                        │
+│                                                                        │
+│  - React 19 + TypeScript + Vite                                        │
+│  - pdf-lib: Unión (Merge), extracción, borrado y rotación de páginas.   │
+│  - pdf.js: Previsualización de documentos y renderizado de páginas.    │
+│  - SortableJS: Interfaz de arrastrar y soltar para reordenar páginas.  │
+│  - Tailwind CSS: UI moderna, minimalista y responsive.                 │
+└──────────────────────────────────┬─────────────────────────────────────┘
+                                   │
+                ¿Requiere conversión / OCR de backend?
+                                   │
+                                   ▼ (Peticiones HTTPS seguras /api)
+┌────────────────────────────────────────────────────────────────────────┐
+│                      CAPA BACKEND (DOCKER / NODE)                      │
+│                                                                        │
+│  - API Express (Node.js) en Puerto 4000: Endpoint de orquestación.     │
+│  - Gotenberg Engine en Puerto 8081: Contenedor Docker con LibreOffice   │
+│    headless para convertir .docx, .xlsx y .pptx de forma segura.       │
+│  - Tesseract Engine: OCR local-first/server para lectura de imágenes.  │
+└────────────────────────────────────────────────────────────────────────┘
+
+--------------------------------------------------------------------------------
+2. PLANIFICACIÓN POR FASES (CRONOGRAMA DE 7 SEMANAS)
+--------------------------------------------------------------------------------
+
+FASE 1: EL EDITOR BASE (Semanas 1-2)
+----------------------------------------------------------------
+*   Configuración inicial y layout base (Header, Footer, Grid de Herramientas).
+*   Integración de pdf.js para cargar y renderizar previsualizaciones en canvas.
+*   Implementación de Unión (Merge): Leer múltiples archivos, unificar binarios
+    mediante pdf-lib en el cliente y disparar la descarga.
+*   Implementación de Separación (Split): Selección de rangos de páginas y
+    generación de nuevos PDFs independientes sin conexión al servidor.
+*   Organizador Visual: Vista en miniatura de páginas con capacidad de:
+    - Rotar páginas individualmente.
+    - Reordenar páginas mediante drag & drop (SortableJS).
+    - Eliminar páginas individuales.
+
+FASE 2: CONECTORES Y SERVICIOS AUXILIARES (Semanas 3-4)
+----------------------------------------------------------------
+*   Estabilización del entorno Docker compose para producción y pruebas.
+*   Desarrollo de los conectores de API Express hacia Gotenberg.
+*   Función de conversión de Office (Word, Excel, PowerPoint) a PDF.
+*   Función de conversión inversa de PDF a Imágenes (Client-side con canvas).
+*   Optimización y Compresión de PDF (Ghostscript en Backend o optimización
+    de diccionarios binarios en frontend mediante pdf-lib).
+
+FASE 3: DISEÑADOR Y RELLENADOR DE FORMULARIOS INTERACTIVOS (Semanas 5-6)
+----------------------------------------------------------------
+*   Módulo Form Creator: Interfaz visual tipo "lienzo" sobre PDF para arrastrar,
+    redimensionar e inyectar campos interactivos (inputs de texto, checkbox).
+*   Compilación de campos interactivos en el formato nativo AcroForms con pdf-lib.
+*   Módulo Form Filler: Visualización de formularios PDF e interactividad de campos.
+*   Exportación y Extracción:
+    - Aplanado de PDFs (Flattening) para firmar o consolidar datos.
+    - Exportación de respuestas a JSON estructurado para integraciones.
+
+FASE 4: EMPAQUETADO, SEGURIDAD Y DISTRIBUCIÓN (Semana 7)
+----------------------------------------------------------------
+*   Creación del Dockerfile y Docker Compose de producción unificado.
+*   Auditoría de privacidad: Asegurar que los PDFs procesados en cliente no se
+    envíen nunca a redes externas, y que los procesados en backend se purguen
+    inmediatamente tras ser servidos en memoria.
+*   Despliegue final a través del túnel de Cloudflare dedicado.
+
+--------------------------------------------------------------------------------
+3. POLÍTICA DE PRIVACIDAD DE DATOS (SaaS Soberano)
+--------------------------------------------------------------------------------
+*   Principio de Confianza Cero (Zero-Trust): Ningún archivo de usuario es
+    almacenado permanentemente en base de datos ni en el sistema de archivos del
+    servidor.
+*   La conversión de Office se realiza en caliente (in-memory stream/pipe) en
+    contenedores efímeros.
+*   El procesamiento OCR y de PDFs estándar se ejecuta en el navegador del cliente
+    (WebAssembly y JavaScript nativo), protegiendo la información confidencial.
