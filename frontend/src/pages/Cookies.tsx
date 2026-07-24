@@ -2,10 +2,15 @@ import { Link } from 'react-router-dom';
 import { SlidersHorizontal } from 'lucide-react';
 import { PageHero, Prose, Section, DefRow, Mono } from '../components/page-kit';
 import { openCookieSettings } from '../lib/consent';
+import { usePageMeta } from '../lib/usePageMeta';
 
 const UPDATED = 'julio de 2026';
 
 export function Cookies() {
+  usePageMeta(
+    'Cookies · DocLab',
+    'DocLab no usa cookies de seguimiento ni analítica. Solo almacenamiento local de primera parte para que la herramienta funcione y recuerde tus ajustes.',
+  );
   return (
     <>
       <PageHero

@@ -10,8 +10,13 @@ import { OnDeviceBadge } from '../components/OnDeviceBadge';
 import { SearchBar } from '../components/SearchBar';
 import { CategoryChips, type CategoryFilter } from '../components/CategoryChips';
 import { ErrorAlert } from '../components/ui';
+import { usePageMeta } from '../lib/usePageMeta';
 
 export function Home() {
+  usePageMeta(
+    'DocLab · Herramientas de PDF privadas, en tu navegador',
+    'Une, comprime, edita, cifra y convierte PDF gratis, directamente en tu navegador. Tus archivos no salen de tu dispositivo: sin subidas, sin cuentas y sin rastreo.',
+  );
   const [query, setQuery] = useState('');
   const [category, setCategory] = useState<CategoryFilter>('all');
   const [aiAvailable, setAiAvailable] = useState(false);

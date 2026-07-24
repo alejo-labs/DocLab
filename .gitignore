@@ -55,3 +55,9 @@ yarn-error.log*
 # Artefactos del harness de Claude Code (no forman parte del proyecto).
 .agents/
 skills-lock.json
+
+# Documentación interna de desarrollo (informes/planes): NO se publica en el repo,
+# se conserva solo en local. GitHub debe mostrar únicamente el código.
+/INFORME-*.md
+/docs/
+/cloudflare-tunnel.md

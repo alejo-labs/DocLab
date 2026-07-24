@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Cpu, FileDown, ShieldCheck, Wand2, WifiOff, Boxes, ScanText, Lock, ArrowRight } from 'lucide-react';
 import { PageHero, Prose, Section, FeatureCard, Mono } from '../components/page-kit';
+import { usePageMeta } from '../lib/usePageMeta';
 
 const flow = [
   { n: '01', title: 'Sueltas el archivo', body: 'El PDF (o imagen/Office) se lee en memoria del navegador con la API FileReader. No hay ninguna subida: nada viaja por la red.' },
@@ -18,6 +19,10 @@ const engines = [
 ];
 
 export function HowItWorks() {
+  usePageMeta(
+    'Cómo funciona · DocLab',
+    'DocLab procesa tus PDF en el navegador con WebAssembly: sin subidas ni servidores. Los motores (pdf-lib, pdf.js, qpdf, tesseract) y el porqué del enfoque local-first.',
+  );
   return (
     <>
       <PageHero

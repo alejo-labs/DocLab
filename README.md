@@ -1,87 +1,86 @@
-# DocLab — Instrumentos de PDF local-first
+<div align="center">
 
-DocLab es un clon **funcional** de iLovePDF construido sobre un principio: **soberanía del dato**. El
-procesamiento estándar de PDF (unir, dividir, organizar, comprimir, imágenes↔PDF) ocurre **100% en el
-navegador** mediante `pdf-lib` y `pdf.js` — tus archivos confidenciales no salen de tu dispositivo. Solo la
-conversión de Office (Word/Excel/PowerPoint → PDF) se delega a un microservicio Docker (Gotenberg) **efímero
-y sin retención**.
+<img src="frontend/public/og-image.png" alt="DocLab — herramientas de PDF que no salen de tu navegador" width="640" />
 
-Sin cuentas. Sin base de datos. Cero retención.
+# DocLab
 
----
+**Herramientas de PDF que se procesan en tu navegador. Tus archivos nunca salen de tu dispositivo.**
 
-## 🏗️ Arquitectura y puertos (desarrollo en paralelo al ERP)
+[![Licencia: MIT](https://img.shields.io/badge/Licencia-MIT-0a8c81)](LICENSE)
+![100% en el dispositivo](https://img.shields.io/badge/Procesamiento-100%25%20en%20el%20dispositivo-0a8c81)
+![React 19](https://img.shields.io/badge/React-19-14161b)
+![TypeScript](https://img.shields.io/badge/TypeScript-strict-14161b)
+![0 vulnerabilidades](https://img.shields.io/badge/npm%20audit-sin%20vulnerabilidades-0a8c81)
 
-Para convivir con el ERP existente (puertos `5173` / `3001`), DocLab usa puertos dedicados:
-
-| Servicio                | URL                       | Puerto |
-| ----------------------- | ------------------------- | ------ |
-| Frontend (React + Vite) | `http://localhost:5174`   | `5174` |
-| Backend API (Express/TS)| `http://localhost:4000`   | `4000` |
-| Gotenberg (Docker)      | `http://localhost:8081`   | `8081` (solo `127.0.0.1`) |
-
-```
-Navegador  ──(pdf-lib / pdf.js, 0 bytes suben)──>  procesa localmente
-   │
-   └─ /api/convert/office ──> Backend Express (TS, endurecido) ──> Gotenberg (interno, efímero)
-```
-
-### Seguridad incorporada
-- **Backend en TypeScript** con validación de entorno (`zod`).
-- `helmet` (CSP), `express-rate-limit`, **CORS por allowlist**, `x-powered-by` deshabilitado, timeouts.
-- Subida **en memoria** (`multer.memoryStorage`) — nunca se escribe a disco. Límite de tamaño configurable.
-- Validación de **magic bytes** (no se confía en la extensión ni el MIME declarado).
-- Saneado de nombres de archivo (anti header-injection / path traversal).
-- Gotenberg **ligado a `127.0.0.1`**, rutas de Chromium deshabilitadas, contenedor `read_only` con `tmpfs`,
-  `no-new-privileges` y `cap_drop: ALL`. Nunca se expone al túnel.
-- CI (typecheck · test · build · `npm audit`) + Dependabot.
+</div>
 
 ---
 
-## 🚀 Inicio rápido
+## ¿Qué es DocLab?
 
-**Requisito:** Docker Desktop abierto (`open -a Docker`).
+DocLab es una suite de herramientas de PDF —**un clon privacy-first de iLovePDF**— con una diferencia de fondo:
+casi todo lo que otras webs hacen en sus servidores, DocLab lo hace **dentro de tu navegador** con WebAssembly.
+
+Unir, dividir, comprimir, cifrar, editar, reconocer texto (OCR) o convertir: el documento se abre en memoria,
+se procesa en tu equipo y se descarga. **No hay subida, no hay cuentas, no hay retención.** La privacidad no es
+una promesa de la letra pequeña: es la arquitectura.
+
+> 🔒 Puedes comprobarlo: abre la pestaña «Network» del navegador mientras procesas un archivo y verás que no se
+> envía nada. Muchas herramientas funcionan incluso sin conexión.
+
+## ✨ Funciones
+
+- **Organizar** — unir, dividir, reordenar, rotar, N-up (varias páginas por hoja), numerar.
+- **Optimizar** — comprimir (recompresión inteligente de imágenes), pasar imágenes ↔ PDF.
+- **Editar** — editor visual, marcas de agua, formularios (crear, rellenar, firmar).
+- **Seguridad** — proteger/desbloquear con contraseña (AES-256), censurar de verdad, sanear (quitar JS/adjuntos/metadatos), comparar versiones.
+- **Convertir / IA** — OCR para hacer buscables los escaneados, PDF → Word, y un buscador con IA que sugiere la herramienta adecuada.
+
+## 🛡️ Privacidad y seguridad
+
+- **Procesamiento local por defecto** con WebAssembly (pdf-lib, pdf.js, qpdf, tesseract.js), todo **autoalojado** — sin CDNs de terceros.
+- **La única función con red** es la búsqueda con IA, a la que solo viaja tu frase de búsqueda, **jamás un archivo**.
+- **Content-Security-Policy estricta** (`'self'` + `'wasm-unsafe-eval'`), cabeceras de seguridad, cifrado en un Web Worker.
+- **Sin dependencias vulnerables** (`npm audit` en verde), solo licencias permisivas (MIT/Apache/ISC), CI + Dependabot.
+- Sin `dangerouslySetInnerHTML` en toda la app · TypeScript estricto · `oxlint` a cero avisos · 51 tests de lógica pura.
+
+## 🧰 Tecnología
+
+| Capa | Stack |
+| --- | --- |
+| Frontend | React 19 · TypeScript · Vite · Tailwind CSS v4 |
+| Motores PDF | pdf-lib · pdf.js · qpdf-wasm (AES-256) · tesseract.js (OCR) · fflate · docx · pptxgenjs |
+| Backend (mínimo) | Express · zod · helmet · rate-limit — **solo** el proxy de la búsqueda con IA |
+| Infra | Docker · Nginx (CSP/HSTS) · despliegue tras túnel |
+
+## 🤖 Un proyecto de demostración
+
+DocLab es una **pieza de demostración desarrollada con asistencia de IA** (Claude), de principio a fin:
+arquitectura, motores en WebAssembly, diseño, accesibilidad, tests, seguridad y documentación. Es un ejemplo
+de hasta dónde puede llegar hoy el desarrollo asistido por IA manteniendo criterios reales de calidad,
+privacidad y seguridad.
+
+## 📂 Estructura
+
+```
+frontend/   SPA de React: herramientas, motores de PDF (lib/pdf), páginas y UI
+backend/    API mínima en Express (solo el proxy de búsqueda con IA)
+```
+
+## 🚀 Desarrollo local
+
+Requisitos: Node 22+. Cada parte es independiente:
 
 ```bash
-# 1) Servicio de conversión de Office
-docker compose up -d                 # Gotenberg en 127.0.0.1:8081
+# Frontend (la app y todas las herramientas)
+cd frontend && npm install && npm run dev
 
-# 2) Backend
-cd backend && cp .env.example .env   # ajusta valores si hace falta
-npm install && npm run dev           # http://localhost:4000
-
-# 3) Frontend
-cd ../frontend
-npm install && npm run dev           # http://localhost:5174
+# Backend (opcional: solo habilita la búsqueda con IA; requiere una clave de Gemini)
+cd backend && npm install && npm run dev
 ```
 
-Comprobaciones: `http://localhost:4000/api/health` y `http://localhost:4000/api/gotenberg-health`.
+Scripts útiles — Frontend: `npm run build` · `npm run lint` · `npm test`. Backend: `npm run typecheck` · `npm test`.
 
-### Scripts útiles
-- Backend: `npm run dev` · `npm run typecheck` · `npm test` · `npm run build`
-- Frontend: `npm run dev` · `npm run lint` · `npm run build`
+## 📄 Licencia
 
----
-
-## 📦 Producción (stack endurecido)
-
-`docker-compose.prod.yml` levanta tres servicios en una red interna de Docker:
-
-```
-Túnel Cloudflare ──> Nginx :8088 ──┬── sirve la SPA (build estático + CSP/HSTS)
-  (único expuesto)                 └── reverse-proxy /api ──> backend ──> gotenberg
-                                                            (sin puertos publicados)
-```
-
-```bash
-PUBLIC_ORIGIN=https://pdf.tudominio.com docker compose -f docker-compose.prod.yml up -d --build
-```
-
-- **Única superficie expuesta: Nginx.** El backend (4000) y Gotenberg (3000) solo existen en la red interna.
-- Nginx añade CSP (afinada para el worker de pdf.js), HSTS, `X-Frame-Options: DENY`, `nosniff`, `no-referrer`.
-- Contenedores `read_only`, `cap_drop: ALL`, `no-new-privileges`, con límites de memoria.
-
-## ☁️ Acceso externo (túnel de Cloudflare)
-
-Guía dedicada en [cloudflare-tunnel.md](cloudflare-tunnel.md). En producción el túnel apunta a un **único
-servicio (Nginx, 8088)**; el backend y Gotenberg nunca se exponen.
+[MIT](LICENSE) © 2026. Código abierto. Las librerías de terceros conservan sus respectivas licencias.

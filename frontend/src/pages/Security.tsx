@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Lock, ServerCog, PackageCheck, EyeOff, FileWarning, KeyRound } from 'lucide-react';
 import { PageHero, Prose, Section, FeatureCard, DefRow, Mono } from '../components/page-kit';
+import { usePageMeta } from '../lib/usePageMeta';
 
 const headers: { name: string; value: string; why: string }[] = [
   { name: 'Content-Security-Policy', value: "script-src 'self' 'wasm-unsafe-eval'", why: 'Solo se ejecuta código de nuestro propio dominio. Sin scripts en línea ni de terceros.' },
@@ -12,6 +13,10 @@ const headers: { name: string; value: string; why: string }[] = [
 ];
 
 export function Security() {
+  usePageMeta(
+    'Seguridad · DocLab',
+    'Seguridad por arquitectura: procesamiento en el dispositivo, WebAssembly en sandbox, CSP estricta, cifrado AES-256 y cero retención. Así protege DocLab tus documentos.',
+  );
   return (
     <>
       <PageHero

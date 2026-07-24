@@ -1,9 +1,14 @@
 import { Link } from 'react-router-dom';
 import { PageHero, Prose, Section } from '../components/page-kit';
+import { usePageMeta } from '../lib/usePageMeta';
 
 const UPDATED = 'julio de 2026';
 
 export function LegalNotice() {
+  usePageMeta(
+    'Aviso legal · DocLab',
+    'Condiciones de uso de DocLab: herramienta gratuita ofrecida «tal cual», con procesamiento en tu dispositivo. Uso aceptable, propiedad intelectual y responsabilidad.',
+  );
   return (
     <>
       <PageHero

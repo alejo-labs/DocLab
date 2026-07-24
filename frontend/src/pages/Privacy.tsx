@@ -1,10 +1,15 @@
 import { Link } from 'react-router-dom';
 import { ShieldCheck, Trash2, Lock, Sparkles } from 'lucide-react';
 import { PageHero, Prose, Section, FeatureCard } from '../components/page-kit';
+import { usePageMeta } from '../lib/usePageMeta';
 
 const UPDATED = 'julio de 2026';
 
 export function Privacy() {
+  usePageMeta(
+    'Privacidad · DocLab',
+    'Política de privacidad de DocLab (RGPD/LOPDGDD): tus documentos se procesan en tu dispositivo y no se suben. Sin cuentas, sin seguimiento, sin retención.',
+  );
   return (
     <>
       <PageHero

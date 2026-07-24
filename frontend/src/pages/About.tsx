@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Code2, Compass, Layers, HeartHandshake, ArrowRight } from 'lucide-react';
 import { PageHero, Prose, Section, FeatureCard } from '../components/page-kit';
+import { usePageMeta } from '../lib/usePageMeta';
 
 const principles = [
   { icon: Compass, title: 'Privacidad primero', body: 'Cada decisión de diseño se toma a favor de tus datos. Si algo puede hacerse en el dispositivo, se hace en el dispositivo.' },
@@ -9,6 +10,10 @@ const principles = [
 ];
 
 export function About() {
+  usePageMeta(
+    'Sobre DocLab',
+    'DocLab es un laboratorio de PDF local-first: un proyecto de demostración desarrollado con IA que prioriza la privacidad, la accesibilidad y la calidad de ingeniería.',
+  );
   return (
     <>
       <PageHero

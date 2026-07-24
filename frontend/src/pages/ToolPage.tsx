@@ -7,6 +7,7 @@ import { ProcessingTypeContext } from '../lib/processing';
 import { TOOL_COMPONENTS } from '../components/tools/registry';
 import { ErrorBoundary } from '../components/ErrorBoundary';
 import { LoadingFacts } from '../components/LoadingFacts';
+import { usePageMeta } from '../lib/usePageMeta';
 import { NotFound } from './NotFound';
 
 /**
@@ -16,6 +17,11 @@ import { NotFound } from './NotFound';
 export function ToolPage() {
   const { slug } = useParams();
   const tool = slug ? getToolBySlug(slug) : undefined;
+
+  usePageMeta(
+    tool ? `${tool.name} · DocLab` : '',
+    tool ? `${tool.description} Gratis y 100% en tu navegador, sin subir archivos.` : undefined,
+  );
 
   if (!tool) {
     return <NotFound />;

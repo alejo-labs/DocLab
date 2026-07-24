@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
+import { usePageMeta } from '../lib/usePageMeta';
 
 export function NotFound() {
+  usePageMeta('Página no encontrada · DocLab');
   return (
     <section className="mx-auto grid max-w-xl place-items-center px-5 py-28 text-center">
       <p className="font-mono text-sm text-signal-deep">404</p>

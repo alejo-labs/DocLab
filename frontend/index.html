@@ -2,14 +2,79 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="color-scheme" content="light" />
+
+    <!-- ── SEO base ──────────────────────────────────────────────────────────
+         NOTA: sustituye "https://pdf.tudominio.com" por tu dominio real al desplegar
+         (aquí, en site.webmanifest, robots.txt y sitemap.xml). -->
+    <title>DocLab · Herramientas de PDF privadas, en tu navegador</title>
     <meta
       name="description"
-      content="DocLab — edita, une, divide y convierte tus PDF directamente en tu navegador. Tus archivos no salen de tu dispositivo."
+      content="Une, comprime, edita, cifra y convierte PDF gratis, directamente en tu navegador. Tus archivos no salen de tu dispositivo: sin subidas, sin cuentas y sin rastreo."
     />
-    <title>DocLab · Instrumentos de PDF local-first</title>
+    <meta name="keywords" content="PDF, unir PDF, dividir PDF, comprimir PDF, editar PDF, cifrar PDF, OCR PDF, PDF a Word, privacidad, local" />
+    <meta name="author" content="Alejandro Aguirre" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://pdf.tudominio.com/" />
+
+    <!-- Apariencia -->
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#f6f4ef" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#14161b" media="(prefers-color-scheme: dark)" />
+
+    <!-- Iconos -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="apple-mobile-web-app-title" content="DocLab" />
+
+    <!-- ── Open Graph (Facebook, LinkedIn, WhatsApp…) ── -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="DocLab" />
+    <meta property="og:locale" content="es_ES" />
+    <meta property="og:url" content="https://pdf.tudominio.com/" />
+    <meta property="og:title" content="DocLab · Herramientas de PDF privadas, en tu navegador" />
+    <meta
+      property="og:description"
+      content="Une, comprime, edita, cifra y convierte PDF gratis. Todo en tu dispositivo: sin subidas, sin cuentas, sin rastreo."
+    />
+    <meta property="og:image" content="https://pdf.tudominio.com/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="DocLab — Tus PDF, sin salir de tu navegador" />
+
+    <!-- ── Twitter / X ── -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="DocLab · Herramientas de PDF privadas, en tu navegador" />
+    <meta name="twitter:description" content="Une, comprime, edita, cifra y convierte PDF gratis, en tu dispositivo. Sin subidas, sin cuentas, sin rastreo." />
+    <meta name="twitter:image" content="https://pdf.tudominio.com/og-image.png" />
+    <meta name="twitter:image:alt" content="DocLab — Tus PDF, sin salir de tu navegador" />
+
+    <!-- ── Datos estructurados (Schema.org) ── -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "DocLab",
+        "url": "https://pdf.tudominio.com/",
+        "description": "Herramientas de PDF que se procesan en tu navegador. Tus archivos no salen de tu dispositivo: unir, dividir, comprimir, editar, cifrar, OCR y convertir.",
+        "applicationCategory": "UtilitiesApplication",
+        "operatingSystem": "Web (cualquier navegador moderno)",
+        "browserRequirements": "Requiere un navegador con soporte de WebAssembly",
+        "inLanguage": "es",
+        "isAccessibleForFree": true,
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
+        "featureList": [
+          "Unir y dividir PDF",
+          "Comprimir PDF",
+          "Editar PDF y formularios",
+          "Proteger y cifrar PDF (AES-256)",
+          "OCR y PDF buscable",
+          "Convertir imágenes y PDF"
+        ]
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
