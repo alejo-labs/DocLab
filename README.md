@@ -1,78 +1,87 @@
-# Clon de ILovePDF - Proyecto Demostrativo SaaS (Local-First & Self-Hosted)
+# DocLab — Instrumentos de PDF local-first
 
-Este proyecto tiene como objetivo demostrar la viabilidad y simplicidad de replicar herramientas SaaS populares de procesamiento de PDF (como ILovePDF) priorizando la privacidad y el procesamiento local en el navegador, delegando únicamente tareas de conversión de Office y OCR a servicios autoalojados en Docker.
+DocLab es un clon **funcional** de iLovePDF construido sobre un principio: **soberanía del dato**. El
+procesamiento estándar de PDF (unir, dividir, organizar, comprimir, imágenes↔PDF) ocurre **100% en el
+navegador** mediante `pdf-lib` y `pdf.js` — tus archivos confidenciales no salen de tu dispositivo. Solo la
+conversión de Office (Word/Excel/PowerPoint → PDF) se delega a un microservicio Docker (Gotenberg) **efímero
+y sin retención**.
 
----
-
-## 🛠️ Arquitectura y Asignación de Puertos (Desarrollo Paralelo)
-
-Para poder ejecutar este proyecto en tu Mac Mini M4 de forma simultánea a tu ERP existente (que ocupa los puertos `5173` y `3001`), se han asignado los siguientes puertos dedicados para este entorno:
-
-*   **Frontend (SPA React):** `http://localhost:5174` (Puerto `5174`)
-*   **Backend API (Express):** `http://localhost:4000` (Puerto `4000`)
-*   **Gotenberg Service (Docker):** `http://localhost:8081` (Puerto `8081`)
+Sin cuentas. Sin base de datos. Cero retención.
 
 ---
 
-## 🚀 Guía de Inicio Rápido
+## 🏗️ Arquitectura y puertos (desarrollo en paralelo al ERP)
 
-### Requisitos Previos
+Para convivir con el ERP existente (puertos `5173` / `3001`), DocLab usa puertos dedicados:
 
-1.  Tener **Docker Desktop** abierto y corriendo en macOS. Puedes iniciarlo desde tu terminal con:
-    ```bash
-    open -a Docker
-    ```
+| Servicio                | URL                       | Puerto |
+| ----------------------- | ------------------------- | ------ |
+| Frontend (React + Vite) | `http://localhost:5174`   | `5174` |
+| Backend API (Express/TS)| `http://localhost:4000`   | `4000` |
+| Gotenberg (Docker)      | `http://localhost:8081`   | `8081` (solo `127.0.0.1`) |
 
-### Paso 1: Iniciar el Microservicio Gotenberg (Conversión de Office)
-
-Desde la raíz del proyecto, levanta el contenedor de Docker para Gotenberg:
-
-```bash
-docker compose up -d
+```
+Navegador  ──(pdf-lib / pdf.js, 0 bytes suben)──>  procesa localmente
+   │
+   └─ /api/convert/office ──> Backend Express (TS, endurecido) ──> Gotenberg (interno, efímero)
 ```
 
-Puedes verificar que responde correctamente accediendo a su prueba de salud en tu navegador: `http://localhost:8081/health`
-
-### Paso 2: Levantar el Backend API
-
-El backend gestiona llamadas que requieren procesamiento del servidor (conversión a través de Gotenberg y en el futuro, OCR).
-
-1.  Entra en la carpeta del backend:
-    ```bash
-    cd backend
-    ```
-2.  Instala las dependencias (si no lo has hecho ya):
-    ```bash
-    npm install
-    ```
-3.  Arranca el servidor en modo desarrollo:
-    ```bash
-    npm run dev
-    ```
-
-El servidor estará escuchando en `http://localhost:4000`. Puedes comprobar que está conectado con Docker/Gotenberg entrando en: `http://localhost:4000/api/gotenberg-health`
-
-### Paso 3: Levantar el Frontend (React + Vite)
-
-El frontend realiza el 100% de la manipulación estándar de PDF (unir, dividir, rotar, etc.) de forma local en el navegador utilizando `pdf-lib` y `pdf.js`.
-
-1.  Entra en la carpeta del frontend:
-    ```bash
-    cd ../frontend
-    ```
-2.  Instala las dependencias (si no lo has hecho ya):
-    ```bash
-    npm install
-    ```
-3.  Arranca la aplicación:
-    ```bash
-    npm run dev
-    ```
-
-El frontend se abrirá en `http://localhost:5174` y tiene configurado un proxy transparente que redirige automáticamente todas las peticiones a `/api` hacia el backend en el puerto `4000`.
+### Seguridad incorporada
+- **Backend en TypeScript** con validación de entorno (`zod`).
+- `helmet` (CSP), `express-rate-limit`, **CORS por allowlist**, `x-powered-by` deshabilitado, timeouts.
+- Subida **en memoria** (`multer.memoryStorage`) — nunca se escribe a disco. Límite de tamaño configurable.
+- Validación de **magic bytes** (no se confía en la extensión ni el MIME declarado).
+- Saneado de nombres de archivo (anti header-injection / path traversal).
+- Gotenberg **ligado a `127.0.0.1`**, rutas de Chromium deshabilitadas, contenedor `read_only` con `tmpfs`,
+  `no-new-privileges` y `cap_drop: ALL`. Nunca se expone al túnel.
+- CI (typecheck · test · build · `npm audit`) + Dependabot.
 
 ---
 
-## ☁️ Acceso Externo (Túnel de Cloudflare)
+## 🚀 Inicio rápido
 
-Para publicar el proyecto en internet de forma que cualquier persona pueda probarlo desde fuera, consulta la guía paso a paso en [cloudflare-tunnel.md](file:///Users/AlejandroAF1/Desktop/PDF%20Proyect/cloudflare-tunnel.md) en la raíz del proyecto.
+**Requisito:** Docker Desktop abierto (`open -a Docker`).
+
+```bash
+# 1) Servicio de conversión de Office
+docker compose up -d                 # Gotenberg en 127.0.0.1:8081
+
+# 2) Backend
+cd backend && cp .env.example .env   # ajusta valores si hace falta
+npm install && npm run dev           # http://localhost:4000
+
+# 3) Frontend
+cd ../frontend
+npm install && npm run dev           # http://localhost:5174
+```
+
+Comprobaciones: `http://localhost:4000/api/health` y `http://localhost:4000/api/gotenberg-health`.
+
+### Scripts útiles
+- Backend: `npm run dev` · `npm run typecheck` · `npm test` · `npm run build`
+- Frontend: `npm run dev` · `npm run lint` · `npm run build`
+
+---
+
+## 📦 Producción (stack endurecido)
+
+`docker-compose.prod.yml` levanta tres servicios en una red interna de Docker:
+
+```
+Túnel Cloudflare ──> Nginx :8088 ──┬── sirve la SPA (build estático + CSP/HSTS)
+  (único expuesto)                 └── reverse-proxy /api ──> backend ──> gotenberg
+                                                            (sin puertos publicados)
+```
+
+```bash
+PUBLIC_ORIGIN=https://pdf.tudominio.com docker compose -f docker-compose.prod.yml up -d --build
+```
+
+- **Única superficie expuesta: Nginx.** El backend (4000) y Gotenberg (3000) solo existen en la red interna.
+- Nginx añade CSP (afinada para el worker de pdf.js), HSTS, `X-Frame-Options: DENY`, `nosniff`, `no-referrer`.
+- Contenedores `read_only`, `cap_drop: ALL`, `no-new-privileges`, con límites de memoria.
+
+## ☁️ Acceso externo (túnel de Cloudflare)
+
+Guía dedicada en [cloudflare-tunnel.md](cloudflare-tunnel.md). En producción el túnel apunta a un **único
+servicio (Nginx, 8088)**; el backend y Gotenberg nunca se exponen.

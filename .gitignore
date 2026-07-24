@@ -34,9 +34,24 @@ yarn-debug.log*
 yarn-error.log*
 .eslintcache
 
-# Archivos temporales de procesamiento de PDF y archivos subidos durante desarrollo
+# Archivos temporales (DocLab NO escribe archivos a disco; esto es defensa en profundidad)
 /backend/uploads/
 /backend/temp/
 *.pdf.tmp
 *.pdf.ocr
 *.log
+
+# Salida de compilación de TypeScript
+/backend/dist/
+*.tsbuildinfo
+
+# Modelos de OCR (tesseract) sueltos: se generan con `npm run setup:ocr`, no se versionan.
+/frontend/eng.traineddata
+*.traineddata
+
+# PDFs de prueba/scratch (fixtures locales, no forman parte del producto).
+/pdf_pruebas/
+
+# Artefactos del harness de Claude Code (no forman parte del proyecto).
+.agents/
+skills-lock.json

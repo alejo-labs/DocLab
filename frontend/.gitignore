@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# Assets de OCR (tesseract): ~9 MB, se generan con `npm run setup:ocr` (no se versionan).
+public/tesseract
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

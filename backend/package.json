@@ -1,22 +1,33 @@
 {
-  "name": "pdf-backend",
+  "name": "doclab-backend",
   "version": "1.0.0",
-  "description": "Backend API para clon de ILovePDF. Maneja OCR y conversiones con Gotenberg",
-  "main": "src/index.js",
+  "description": "Backend API de DocLab. Orquesta conversiones de Office con Gotenberg de forma segura y efímera.",
+  "main": "dist/index.js",
   "type": "module",
   "scripts": {
-    "start": "node src/index.js",
-    "dev": "nodemon src/index.js"
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
   },
   "dependencies": {
-    "axios": "^1.7.2",
+    "@google/genai": "^2.10.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
-    "form-data": "^4.0.0",
-    "multer": "^1.4.5-lts.1"
+    "express-rate-limit": "^8.5.2",
+    "helmet": "^8.2.0",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
-    "nodemon": "^3.1.4"
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/node": "^26.0.1",
+    "@types/supertest": "^7.2.0",
+    "supertest": "^7.2.2",
+    "tsx": "^4.22.4",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.9"
   }
 }
