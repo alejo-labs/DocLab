@@ -1,58 +1,111 @@
-import { ShieldCheck, Server, Trash2, Lock } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { ShieldCheck, Trash2, Lock, Sparkles } from 'lucide-react';
+import { PageHero, Prose, Section, FeatureCard } from '../components/page-kit';
 
-const points = [
-  {
-    icon: ShieldCheck,
-    title: 'Procesamiento local por defecto',
-    body: 'Unir, dividir, organizar, comprimir y convertir imágenes ocurre íntegramente en tu navegador mediante WebAssembly y JavaScript. Esos archivos nunca se transmiten por la red.',
-  },
-  {
-    icon: Server,
-    title: 'Conversión de Office: efímera',
-    body: 'La única tarea que requiere servidor es convertir Word/Excel/PowerPoint a PDF. Se procesa en un contenedor aislado, en memoria, y el archivo se descarta inmediatamente tras devolver el resultado.',
-  },
-  {
-    icon: Trash2,
-    title: 'Cero retención',
-    body: 'No almacenamos tus documentos en disco ni en base de datos. No hay cuentas, ni perfiles, ni seguimiento de los archivos que procesas.',
-  },
-  {
-    icon: Lock,
-    title: 'Sin terceros',
-    body: 'Tipografías y librerías se sirven desde el propio dominio. No cargamos recursos de CDNs externas que pudieran observar tu actividad.',
-  },
-];
+const UPDATED = 'julio de 2026';
 
 export function Privacy() {
   return (
-    <section className="mx-auto max-w-3xl px-5 py-16">
-      <p className="font-mono text-xs uppercase tracking-[0.2em] text-signal-deep">
-        Cómo protegemos tus datos
-      </p>
-      <h1 className="mt-3 font-display text-4xl font-700 tracking-tight text-ink">
-        Privacidad por diseño
-      </h1>
-      <p className="mt-4 text-lg text-graphite">
-        DocLab parte de un principio de confianza cero: tus documentos son tuyos y no tienen por qué
-        pasar por nuestros servidores.
-      </p>
+    <>
+      <PageHero
+        kicker="Cómo protegemos tus datos"
+        title={<>Privacidad <span className="text-signal-deep">por diseño</span></>}
+        lead="DocLab parte de un principio de confianza cero: tus documentos son tuyos y no tienen por qué pasar por ningún servidor."
+      />
 
-      <div className="mt-10 space-y-5">
-        {points.map(({ icon: Icon, title, body }) => (
-          <article
-            key={title}
-            className="flex gap-4 rounded-[var(--radius-instrument)] border border-line bg-paper-raised p-5"
-          >
-            <span className="grid size-10 shrink-0 place-items-center rounded-[10px] border border-line bg-paper text-signal-deep">
-              <Icon className="size-5" aria-hidden />
-            </span>
-            <div>
-              <h2 className="font-display text-lg font-600 tracking-tight text-ink">{title}</h2>
-              <p className="mt-1 text-sm text-graphite">{body}</p>
-            </div>
-          </article>
-        ))}
-      </div>
-    </section>
+      <Prose>
+        {/* Resumen visual */}
+        <Section title="En una frase">
+          <p>
+            El contenido de tus archivos <strong>se procesa en tu dispositivo y nunca se sube</strong>. No hay cuentas,
+            no hay seguimiento y no guardamos tus documentos. La única función que usa un servidor es la búsqueda con IA,
+            y a ella solo viaja tu frase de búsqueda —jamás un archivo.
+          </p>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <FeatureCard icon={ShieldCheck} title="Procesamiento local">
+              Unir, dividir, comprimir, cifrar, editar, OCR y convertir ocurren en tu navegador con WebAssembly. Esos archivos no se transmiten por la red.
+            </FeatureCard>
+            <FeatureCard icon={Trash2} title="Cero retención">
+              No almacenamos tus documentos en disco ni en base de datos. No hay cuentas, ni perfiles, ni historial de archivos.
+            </FeatureCard>
+            <FeatureCard icon={Lock} title="Sin terceros observando">
+              Fuentes y librerías se sirven desde el propio dominio. No cargamos recursos de CDNs externas.
+            </FeatureCard>
+            <FeatureCard icon={Sparkles} title="IA acotada y opcional">
+              El buscador con IA solo recibe tu texto de búsqueda y el catálogo público de herramientas.
+            </FeatureCard>
+          </div>
+        </Section>
+
+        {/* Política formal */}
+        <Section title="Responsable del tratamiento">
+          <p>
+            DocLab es un <strong>proyecto personal y de demostración técnica</strong>, sin ánimo de lucro. Para cualquier
+            cuestión relativa a esta política o al ejercicio de tus derechos, puedes contactar a través de las incidencias
+            del <a href="https://github.com/alejo-labs/DocLab" target="_blank" rel="noreferrer noopener" className="font-medium text-signal-deep hover:underline">repositorio público del proyecto</a>.
+            Esta política se rige por el Reglamento (UE) 2016/679 (RGPD) y la Ley Orgánica 3/2018 (LOPDGDD).
+          </p>
+        </Section>
+
+        <Section title="Qué datos tratamos (y cuáles no)">
+          <ul className="list-disc space-y-2 pl-5">
+            <li>
+              <strong>Tus documentos e imágenes:</strong> <em>no</em> son datos que tratemos. Se abren y procesan
+              localmente en tu navegador y no se envían a ningún servidor, no se almacenan y no se comparten.
+            </li>
+            <li>
+              <strong>Búsqueda con IA (opcional):</strong> si la usas, se envía únicamente tu <strong>frase de búsqueda</strong>
+              {' '}y la lista pública de herramientas a un proveedor de IA para devolverte una sugerencia. No se envían archivos ni datos identificativos.
+            </li>
+            <li>
+              <strong>Datos técnicos mínimos:</strong> al solicitar la búsqueda con IA, el servidor puede procesar de forma
+              <strong> transitoria</strong> tu dirección IP para aplicar límites de uso y prevenir abusos. No se usa para
+              perfilarte ni se conserva con fines de seguimiento.
+            </li>
+            <li>
+              <strong>Preferencias de interfaz:</strong> el tema (claro/oscuro), el aviso de bienvenida y tu elección de
+              cookies se guardan <strong>en tu propio navegador</strong> (localStorage), no en un servidor. Más detalle en{' '}
+              <Link to="/cookies" className="font-medium text-signal-deep hover:underline">Cookies</Link>.
+            </li>
+          </ul>
+        </Section>
+
+        <Section title="Base jurídica">
+          <ul className="list-disc space-y-1.5 pl-5">
+            <li><strong>Consentimiento</strong> (art. 6.1.a RGPD): para enviar tu frase a la búsqueda con IA, que solo se ejecuta cuando la usas activamente.</li>
+            <li><strong>Interés legítimo</strong> (art. 6.1.f RGPD): para el tratamiento transitorio de la IP con fines de seguridad y prevención de abuso del servicio.</li>
+          </ul>
+        </Section>
+
+        <Section title="Terceros y transferencias">
+          <p>
+            El procesamiento de tus documentos no implica a ningún tercero. Para las dos funciones que sí usan red
+            intervienen: un <strong>proveedor de IA</strong> (que recibe únicamente el texto de búsqueda) y el
+            <strong> proveedor de red/hosting</strong> que sirve la página. Estos proveedores pueden estar ubicados fuera
+            del EEE; en tal caso, las transferencias se amparan en las garantías previstas por el RGPD (p. ej. cláusulas
+            contractuales tipo). No vendemos ni cedemos datos a terceros con fines comerciales.
+          </p>
+        </Section>
+
+        <Section title="Tus derechos">
+          <p>
+            Puedes ejercer los derechos de <strong>acceso, rectificación, supresión, oposición, limitación y
+            portabilidad</strong>. Dado que no mantenemos cuentas ni almacenamos tus documentos ni un historial asociado
+            a ti, en la práctica <strong>apenas conservamos datos personales que podamos identificar contigo</strong>.
+            Para cualquier solicitud o reclamación, usa el canal de contacto indicado arriba; también puedes reclamar ante
+            la Agencia Española de Protección de Datos (AEPD).
+          </p>
+        </Section>
+
+        <Section title="Menores, cambios y vigencia">
+          <p>
+            El servicio no está dirigido específicamente a menores ni recopila datos de forma consciente sobre ellos.
+            Podemos actualizar esta política para reflejar mejoras o cambios legales; la versión vigente es siempre la
+            publicada aquí.
+          </p>
+          <p className="pt-2 font-mono text-xs text-graphite">Última actualización: {UPDATED}.</p>
+        </Section>
+      </Prose>
+    </>
   );
 }

@@ -194,6 +194,22 @@
   }
 }
 
+/* Curiosidades de las pantallas de carga: entran con un fundido suave. */
+@keyframes doclab-fact-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.doclab-fact-in {
+  animation: doclab-fact-in 320ms ease-out;
+}
+
 /* Red de seguridad global: quien pida menos movimiento no ve animaciones ni
    transiciones (los estados se comunican también por texto). Complementa las
    reglas por-componente de arriba. */

@@ -1,11 +1,12 @@
 import { Suspense } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { ArrowLeft, Construction, Loader2 } from 'lucide-react';
+import { ArrowLeft, Construction } from 'lucide-react';
 import { getToolBySlug } from '../lib/tools';
 import { OnDeviceBadge } from '../components/OnDeviceBadge';
 import { ProcessingTypeContext } from '../lib/processing';
 import { TOOL_COMPONENTS } from '../components/tools/registry';
 import { ErrorBoundary } from '../components/ErrorBoundary';
+import { LoadingFacts } from '../components/LoadingFacts';
 import { NotFound } from './NotFound';
 
 /**
@@ -51,13 +52,7 @@ export function ToolPage() {
       <div className="mt-8">
         {ToolEngine ? (
           <ErrorBoundary label={tool.name} resetKey={tool.slug}>
-            <Suspense
-              fallback={
-                <div className="grid place-items-center py-16 text-graphite">
-                  <Loader2 className="size-6 animate-spin" aria-hidden />
-                </div>
-              }
-            >
+            <Suspense fallback={<LoadingFacts label={`Preparando «${tool.name}»…`} />}>
               <ProcessingTypeContext value={tool.processing}>
                 <ToolEngine preset={tool.preset} />
               </ProcessingTypeContext>

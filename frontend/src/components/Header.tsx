@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Moon, Sun } from 'lucide-react';
+import { Moon, Sun, Code2 } from 'lucide-react';
 import { useTheme } from '../lib/useTheme';
 
 export function Header() {
@@ -24,6 +24,18 @@ export function Header() {
         </Link>
 
         <nav className="flex items-center gap-1 text-sm">
+          <Link
+            to="/como-funciona"
+            className="hidden rounded-md px-3 py-2 font-medium text-graphite transition-colors hover:bg-ink/5 hover:text-ink sm:inline-flex"
+          >
+            Cómo funciona
+          </Link>
+          <Link
+            to="/seguridad"
+            className="hidden rounded-md px-3 py-2 font-medium text-graphite transition-colors hover:bg-ink/5 hover:text-ink sm:inline-flex"
+          >
+            Seguridad
+          </Link>
           <button
             type="button"
             onClick={toggle}
@@ -33,19 +45,15 @@ export function Header() {
           >
             {theme === 'dark' ? <Sun className="size-5" /> : <Moon className="size-5" />}
           </button>
-          <Link
-            to="/privacidad"
-            className="rounded-md px-3 py-2 font-medium text-graphite transition-colors hover:bg-ink/5 hover:text-ink"
-          >
-            Privacidad
-          </Link>
           <a
-            href="https://github.com"
+            href="https://github.com/alejo-labs/DocLab"
             target="_blank"
             rel="noreferrer noopener"
-            className="rounded-md px-3 py-2 font-medium text-graphite transition-colors hover:bg-ink/5 hover:text-ink"
+            aria-label="Código en GitHub"
+            title="Código en GitHub"
+            className="grid size-9 place-items-center rounded-md text-graphite transition-colors hover:bg-ink/5 hover:text-ink"
           >
-            Código
+            <Code2 className="size-5" />
           </a>
         </nav>
       </div>

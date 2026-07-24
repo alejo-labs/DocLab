@@ -46,4 +46,6 @@ jobs:
       - run: npm ci
       - run: npm run lint
       - run: npm run build
-      - run: npm audit --audit-level=high
+      # Falla ante vulnerabilidades altas/críticas, salvo excepciones documentadas y no
+      # aplicables (ver frontend/scripts/audit-ci.mjs).
+      - run: npm run audit:ci

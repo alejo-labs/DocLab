@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { FlaskConical, ShieldCheck, Sparkles, X, type LucideIcon } from 'lucide-react';
+import { hasDecided, preferencesAllowed, subscribeConsent } from '../lib/consent';
 
 const KEY = 'doclab-onboarded-v1';
 
@@ -17,12 +18,12 @@ const STEPS: Step[] = [
   {
     icon: ShieldCheck,
     title: 'Privacidad por diseño',
-    body: 'Tus archivos se procesan 100% en tu dispositivo y no se suben a ningún servidor. La única excepción (convertir Office) usa un contenedor efímero que no retiene nada.',
+    body: 'Tus archivos se procesan 100% en tu dispositivo con WebAssembly y no se suben a ningún servidor. La única función que usa red es la búsqueda con IA, y a ella solo viaja tu frase, nunca un archivo.',
   },
   {
     icon: Sparkles,
     title: 'Todo en uno',
-    body: 'Editor tipo Canva, unir/dividir, comprimir, marcas de agua, numeración, conversión de imágenes y Office, y búsqueda con IA. Arrastra un PDF a cualquier parte para empezar.',
+    body: 'Editor tipo Canva, unir/dividir, comprimir, cifrar, marcas de agua, numeración, OCR y conversión de imágenes, y búsqueda con IA. Arrastra un PDF a cualquier parte para empezar.',
   },
 ];
 
@@ -32,18 +33,19 @@ export function Onboarding() {
   const [step, setStep] = useState(0);
 
   useEffect(() => {
-    try {
-      if (!localStorage.getItem(KEY)) setOpen(true);
-    } catch {
-      /* localStorage no disponible: no molestamos */
-    }
+    let seen = false;
+    try { seen = !!localStorage.getItem(KEY); } catch { /* sin localStorage */ }
+    if (seen) return;
+    // Esperamos a que se decida el consentimiento de cookies para no apilar overlays.
+    if (hasDecided()) { setOpen(true); return; }
+    const unsub = subscribeConsent(() => { setOpen(true); unsub(); });
+    return unsub;
   }, []);
 
   function close() {
-    try {
-      localStorage.setItem(KEY, '1');
-    } catch {
-      /* ignore */
+    // Solo recordamos «ya visto» si el usuario aceptó las preferencias opcionales.
+    if (preferencesAllowed()) {
+      try { localStorage.setItem(KEY, '1'); } catch { /* ignore */ }
     }
     setOpen(false);
   }

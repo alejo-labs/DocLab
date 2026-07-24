@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
-import { WifiOff, Cpu, Trash2, Sparkles, SearchX } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { WifiOff, Cpu, Trash2, Sparkles, SearchX, ArrowRight } from 'lucide-react';
 import { TOOLS, getToolsByCategory } from '../lib/tools';
 import { CATEGORIES } from '../lib/categories';
 import { searchTools } from '../lib/search';
@@ -85,6 +86,15 @@ export function Home() {
             <div className="mt-3">
               <OnDeviceBadge processing="on-device" size="md" />
             </div>
+          </div>
+
+          {/* Descubrir la documentación */}
+          <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
+            <Link to="/como-funciona" className="inline-flex items-center gap-1.5 font-medium text-signal-deep transition-colors hover:text-ink">
+              Cómo funciona <ArrowRight className="size-3.5" aria-hidden />
+            </Link>
+            <Link to="/seguridad" className="text-graphite transition-colors hover:text-ink">Seguridad</Link>
+            <Link to="/sobre" className="text-graphite transition-colors hover:text-ink">Sobre el proyecto</Link>
           </div>
         </div>
       </section>
