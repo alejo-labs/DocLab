@@ -9,6 +9,6 @@ tunnel: doclab
 credentials-file: /Users/TU_USUARIO/.cloudflared/UUID_DEL_TUNEL.json
 
 ingress:
-  - hostname: pdf.tudominio.com
+  - hostname: doclab-pdf.com
     service: http://localhost:4000
   - service: http_status:404

@@ -37,7 +37,7 @@ desde el propio backend con `helmet`.
    ```
    y ajusta, como mínimo:
    ```
-   CORS_ORIGINS=https://pdf.tudominio.com     # tu dominio real (importante)
+   CORS_ORIGINS=https://doclab-pdf.com     # tu dominio real (importante)
    GEMINI_API_KEY=                            # opcional, para el buscador con IA
    ```
 
@@ -45,7 +45,7 @@ desde el propio backend con `helmet`.
    ```bash
    cloudflared tunnel login              # si no lo has hecho ya
    cloudflared tunnel create doclab      # crea ~/.cloudflared/UUID.json (anota el UUID)
-   cloudflared tunnel route dns doclab pdf.tudominio.com
+   cloudflared tunnel route dns doclab doclab-pdf.com
    ```
    Luego copia la plantilla y rellena tu usuario, el UUID y el dominio:
    ```bash

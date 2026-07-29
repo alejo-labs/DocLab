@@ -7,7 +7,7 @@
 # es opcional y solo sirve la búsqueda con IA (Gemini).
 #
 # Uso:
-#   PUBLIC_ORIGIN=https://pdf.tudominio.com docker compose -f docker-compose.prod.yml up -d --build
+#   PUBLIC_ORIGIN=https://doclab-pdf.com docker compose -f docker-compose.prod.yml up -d --build
 
 services:
   frontend:

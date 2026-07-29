@@ -1,6 +1,5 @@
 # DocLab — robots.txt
-# Sustituye "pdf.tudominio.com" por tu dominio real al desplegar.
 User-agent: *
 Allow: /
 
-Sitemap: https://pdf.tudominio.com/sitemap.xml
+Sitemap: https://doclab-pdf.com/sitemap.xml
