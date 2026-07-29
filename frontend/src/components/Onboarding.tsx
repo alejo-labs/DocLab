@@ -13,7 +13,7 @@ const STEPS: Step[] = [
   {
     icon: FlaskConical,
     title: 'Bienvenido a DocLab',
-    body: 'Tu laboratorio de PDF: edita, convierte y organiza documentos con precisión de instrumento, directo desde el navegador.',
+    body: 'Tu laboratorio de PDF para editar, convertir y organizar documentos con precisión de instrumento, directo desde el navegador.',
   },
   {
     icon: ShieldCheck,

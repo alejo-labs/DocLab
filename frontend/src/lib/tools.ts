@@ -89,8 +89,8 @@ export interface Tool {
 }
 
 /**
- * Catálogo de tarjetas: una por utilidad clara (estilo iLovePDF). Varias reusan
- * el mismo `engineId` con un `preset` distinto.
+ * Catálogo de tarjetas, una por utilidad clara. Varias reusan el mismo `engineId`
+ * con un `preset` distinto.
  */
 export const TOOLS: readonly Tool[] = [
   // ── Editar ──────────────────────────────────────────────────────────────────
@@ -142,7 +142,7 @@ export const TOOLS: readonly Tool[] = [
     slug: 'metadatos-pdf',
     name: 'Editar metadatos',
     short: 'Cambia título, autor y palabras clave.',
-    description: 'Consulta y edita los metadatos del PDF: título, autor, asunto y palabras clave.',
+    description: 'Consulta y edita los metadatos del PDF, como el título, el autor, el asunto y las palabras clave.',
     icon: Tags,
     category: 'editar',
     keywords: ['metadatos', 'metadata', 'titulo', 'autor', 'propiedades', 'palabras clave'],
@@ -240,7 +240,7 @@ export const TOOLS: readonly Tool[] = [
     slug: 'numeros-de-pagina',
     name: 'Números de página',
     short: 'Numera las páginas del documento.',
-    description: 'Añade numeración a tu PDF: elige posición, formato (1/10, Página 1…) y número inicial.',
+    description: 'Añade numeración a tu PDF. Elige la posición, el formato (1/10, Página 1…) y el número inicial.',
     icon: Hash,
     category: 'organizar',
     keywords: ['numeros', 'paginas', 'numerar', 'foliar', 'page numbers'],

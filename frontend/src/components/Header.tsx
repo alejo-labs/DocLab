@@ -7,7 +7,7 @@ export function Header() {
   return (
     <header className="sticky top-0 z-30 border-b border-line bg-paper/85 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5">
-        <Link to="/" className="group flex items-center gap-2.5" aria-label="DocLab — inicio">
+        <Link to="/" className="group flex items-center gap-2.5" aria-label="DocLab, inicio">
           {/* Marca: un cuadrante de instrumento con un punto vivo. */}
           <span className="relative grid size-9 place-items-center rounded-[10px] bg-ink text-paper">
             <span className="font-display text-lg font-700 leading-none">D</span>

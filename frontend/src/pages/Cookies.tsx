@@ -68,12 +68,12 @@ export function Cookies() {
 
         <Section title="Más contexto">
           <p className="text-sm">
-            Este planteamiento es coherente con el resto del proyecto: revisa{' '}
+            Este planteamiento es coherente con el resto del proyecto. Revisa{' '}
             <Link to="/privacidad" className="font-medium text-signal-deep hover:underline">Privacidad</Link> para saber
             qué datos tratamos, y{' '}
             <Link to="/seguridad" className="font-medium text-signal-deep hover:underline">Seguridad</Link> para el detalle técnico.
           </p>
-          <p className="pt-2 font-mono text-xs text-graphite">Última actualización: {UPDATED}.</p>
+          <p className="pt-2 font-mono text-xs text-graphite">Última actualización en {UPDATED}.</p>
         </Section>
       </Prose>
     </>

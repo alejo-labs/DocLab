@@ -173,7 +173,7 @@ export function PdfToOfficeTool({ preset }: ToolEngineProps) {
           </div>
           <label className="mt-2 inline-flex items-center gap-2 text-sm text-ink">
             <input type="checkbox" checked={ocr} onChange={(e) => setOcr(e.target.checked)} className="size-4 accent-[var(--color-signal-deep)]" />
-            Reconocer texto de páginas escaneadas (OCR) <span className="font-mono text-[10px] text-graphite">— más lento</span>
+            Reconocer texto de páginas escaneadas (OCR) <span className="font-mono text-[10px] text-graphite">(más lento)</span>
           </label>
         </div>
       )}

@@ -12,9 +12,9 @@
 @import '@fontsource/jetbrains-mono/500.css';
 
 /* ─── Sistema de tokens de marca DocLab ───────────────────────────────────────
-   Concepto: instrumento de precisión / banco de laboratorio. La privacidad es la
-   marca. Paleta deliberadamente fuera de los defaults (sin rojo iLovePDF, sin
-   crema+serif+terracota, sin negro+verde ácido). */
+   Concepto de instrumento de precisión y banco de laboratorio. La privacidad es la
+   marca. Paleta deliberadamente propia, fuera de los tópicos del sector (sin rojo
+   corporativo, sin crema con serif y terracota, sin negro con verde ácido). */
 @theme {
   --color-ink: #14161b;
   --color-ink-soft: #20242c;

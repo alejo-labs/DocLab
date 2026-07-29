@@ -12,14 +12,14 @@ const principles = [
 export function About() {
   usePageMeta(
     'Sobre DocLab',
-    'DocLab es un laboratorio de PDF local-first: un proyecto de demostración desarrollado con IA que prioriza la privacidad, la accesibilidad y la calidad de ingeniería.',
+    'DocLab es un laboratorio de PDF local-first, un proyecto de demostración desarrollado con IA que prioriza la privacidad, la accesibilidad y la calidad de ingeniería.',
   );
   return (
     <>
       <PageHero
         kicker="Sobre DocLab"
         title={<>Un laboratorio de PDF <span className="text-signal-deep">local-first</span></>}
-        lead="DocLab nace de una idea simple: las herramientas de documentos más usadas del mundo te piden subir tus archivos. ¿Y si no hiciera falta?"
+        lead="DocLab nace de una idea simple. Las herramientas de documentos más usadas del mundo te piden subir tus archivos. ¿Y si no hiciera falta?"
       />
 
       <Prose>
@@ -27,12 +27,12 @@ export function About() {
           <p>
             La mayoría de utilidades de PDF funcionan enviando tu documento a un servidor remoto. Es cómodo, pero
             significa que contratos, nóminas, informes médicos o DNIs pasan por máquinas que no controlas. DocLab
-            demuestra que casi todo eso —unir, dividir, comprimir, cifrar, editar, reconocer texto, convertir— se puede
+            demuestra que casi todo eso (unir, dividir, comprimir, cifrar, editar, reconocer texto o convertir) se puede
             hacer <strong>íntegramente en el navegador</strong>, con la misma comodidad y sin ceder tus archivos.
           </p>
           <p>
-            Es un <strong>proyecto personal y de demostración técnica</strong>: un clon funcional y cuidado que prioriza
-            la privacidad y la calidad de ingeniería por encima de perseguir cada función de las alternativas
+            Es un <strong>proyecto personal y de demostración técnica</strong>, una herramienta funcional y cuidada que
+            prioriza la privacidad y la calidad de ingeniería por encima de perseguir cada función de las alternativas
             comerciales. Algunas herramientas de Office figuran como «en desarrollo» a propósito, para no prometer una
             fidelidad que no está lista.
           </p>
@@ -48,7 +48,7 @@ export function About() {
 
         <Section title="Cómo está hecho">
           <p>
-            Frontend en React 19 + TypeScript + Vite + Tailwind CSS v4. El procesamiento se apoya en librerías de código
+            Frontend en React 19, TypeScript, Vite y Tailwind CSS v4. El procesamiento se apoya en librerías de código
             abierto (pdf-lib, pdf.js, qpdf-wasm, tesseract.js, fflate…), todas autoalojadas. Un backend mínimo en Express
             sirve únicamente el buscador con IA. Puedes leer los detalles en{' '}
             <Link to="/como-funciona" className="font-medium text-signal-deep hover:underline">Cómo funciona</Link> y{' '}

@@ -299,7 +299,7 @@ function FillPanel({ bytes, fields, values, setValues, flatten, setFlatten, onRu
                   </label>
                 ) : f.type === 'radio' || f.type === 'dropdown' ? (
                   <select value={String(values[f.name] ?? '')} onChange={(e) => set(f.name, e.target.value)} aria-required={f.required} className="w-full rounded border border-line bg-paper px-2 py-1.5 text-sm outline-none focus:border-signal">
-                    <option value="">— sin elegir —</option>
+                    <option value="">(sin elegir)</option>
                     {f.options?.map((o) => <option key={o} value={o}>{o}</option>)}
                   </select>
                 ) : f.type === 'optionlist' ? (

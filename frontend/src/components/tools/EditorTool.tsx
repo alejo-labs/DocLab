@@ -725,7 +725,7 @@ export function EditorTool(_props: ToolEngineProps) {
           <div className="space-y-3">
             {tool === 'stamp' && (
               <div className="space-y-2">
-                <p className="font-mono text-xs text-graphite">Elige un sello — se coloca centrado en la página visible.</p>
+                <p className="font-mono text-xs text-graphite">Elige un sello y se coloca centrado en la página visible.</p>
                 <div className="grid grid-cols-2 gap-1.5">
                   {STAMPS.map((st) => (
                     <button key={st.label} type="button" onClick={() => placeStamp(st.label, st.color)} className="rounded border border-line px-2 py-1.5 text-center text-xs font-700 tracking-wide hover:border-current" style={{ color: st.color }}>

@@ -8,14 +8,14 @@ const UPDATED = 'julio de 2026';
 export function Privacy() {
   usePageMeta(
     'Privacidad · DocLab',
-    'Política de privacidad de DocLab (RGPD/LOPDGDD): tus documentos se procesan en tu dispositivo y no se suben. Sin cuentas, sin seguimiento, sin retención.',
+    'Política de privacidad de DocLab según el RGPD y la LOPDGDD. Tus documentos se procesan en tu dispositivo y no se suben. Sin cuentas, sin seguimiento y sin retención.',
   );
   return (
     <>
       <PageHero
         kicker="Cómo protegemos tus datos"
         title={<>Privacidad <span className="text-signal-deep">por diseño</span></>}
-        lead="DocLab parte de un principio de confianza cero: tus documentos son tuyos y no tienen por qué pasar por ningún servidor."
+        lead="DocLab parte de un principio de confianza cero. Tus documentos son tuyos y no tienen por qué pasar por ningún servidor."
       />
 
       <Prose>
@@ -24,7 +24,7 @@ export function Privacy() {
           <p>
             El contenido de tus archivos <strong>se procesa en tu dispositivo y nunca se sube</strong>. No hay cuentas,
             no hay seguimiento y no guardamos tus documentos. La única función que usa un servidor es la búsqueda con IA,
-            y a ella solo viaja tu frase de búsqueda —jamás un archivo.
+            y a ella solo viaja tu frase de búsqueda, jamás un archivo.
           </p>
           <div className="grid gap-4 sm:grid-cols-2">
             <FeatureCard icon={ShieldCheck} title="Procesamiento local">
@@ -55,21 +55,21 @@ export function Privacy() {
         <Section title="Qué datos tratamos (y cuáles no)">
           <ul className="list-disc space-y-2 pl-5">
             <li>
-              <strong>Tus documentos e imágenes:</strong> <em>no</em> son datos que tratemos. Se abren y procesan
+              <strong>Tus documentos e imágenes.</strong> <em>No</em> son datos que tratemos. Se abren y procesan
               localmente en tu navegador y no se envían a ningún servidor, no se almacenan y no se comparten.
             </li>
             <li>
-              <strong>Búsqueda con IA (opcional):</strong> si la usas, se envía únicamente tu <strong>frase de búsqueda</strong>
+              <strong>Búsqueda con IA (opcional).</strong> Si la usas, se envía únicamente tu <strong>frase de búsqueda</strong>
               {' '}y la lista pública de herramientas a un proveedor de IA para devolverte una sugerencia. No se envían archivos ni datos identificativos.
             </li>
             <li>
-              <strong>Datos técnicos mínimos:</strong> al solicitar la búsqueda con IA, el servidor puede procesar de forma
+              <strong>Datos técnicos mínimos.</strong> Al solicitar la búsqueda con IA, el servidor puede procesar de forma
               <strong> transitoria</strong> tu dirección IP para aplicar límites de uso y prevenir abusos. No se usa para
               perfilarte ni se conserva con fines de seguimiento.
             </li>
             <li>
-              <strong>Preferencias de interfaz:</strong> el tema (claro/oscuro), el aviso de bienvenida y tu elección de
-              cookies se guardan <strong>en tu propio navegador</strong> (localStorage), no en un servidor. Más detalle en{' '}
+              <strong>Preferencias de interfaz.</strong> El tema (claro u oscuro), el aviso de bienvenida y tu elección de
+              cookies se guardan <strong>en tu propio navegador</strong> (localStorage), no en un servidor. Tienes más detalle en{' '}
               <Link to="/cookies" className="font-medium text-signal-deep hover:underline">Cookies</Link>.
             </li>
           </ul>
@@ -77,18 +77,18 @@ export function Privacy() {
 
         <Section title="Base jurídica">
           <ul className="list-disc space-y-1.5 pl-5">
-            <li><strong>Consentimiento</strong> (art. 6.1.a RGPD): para enviar tu frase a la búsqueda con IA, que solo se ejecuta cuando la usas activamente.</li>
-            <li><strong>Interés legítimo</strong> (art. 6.1.f RGPD): para el tratamiento transitorio de la IP con fines de seguridad y prevención de abuso del servicio.</li>
+            <li><strong>Consentimiento</strong> (art. 6.1.a RGPD), para enviar tu frase a la búsqueda con IA, que solo se ejecuta cuando la usas activamente.</li>
+            <li><strong>Interés legítimo</strong> (art. 6.1.f RGPD), para el tratamiento transitorio de la IP con fines de seguridad y prevención de abuso del servicio.</li>
           </ul>
         </Section>
 
         <Section title="Terceros y transferencias">
           <p>
-            El procesamiento de tus documentos no implica a ningún tercero. Para las dos funciones que sí usan red
-            intervienen: un <strong>proveedor de IA</strong> (que recibe únicamente el texto de búsqueda) y el
-            <strong> proveedor de red/hosting</strong> que sirve la página. Estos proveedores pueden estar ubicados fuera
-            del EEE; en tal caso, las transferencias se amparan en las garantías previstas por el RGPD (p. ej. cláusulas
-            contractuales tipo). No vendemos ni cedemos datos a terceros con fines comerciales.
+            El procesamiento de tus documentos no implica a ningún tercero. En las dos funciones que sí usan red
+            intervienen un <strong>proveedor de IA</strong> (que recibe únicamente el texto de búsqueda) y el
+            <strong> proveedor de red y hosting</strong> que sirve la página. Estos proveedores pueden estar ubicados fuera
+            del EEE. En ese caso, las transferencias se amparan en las garantías previstas por el RGPD, como las cláusulas
+            contractuales tipo. No vendemos ni cedemos datos a terceros con fines comerciales.
           </p>
         </Section>
 
@@ -97,7 +97,7 @@ export function Privacy() {
             Puedes ejercer los derechos de <strong>acceso, rectificación, supresión, oposición, limitación y
             portabilidad</strong>. Dado que no mantenemos cuentas ni almacenamos tus documentos ni un historial asociado
             a ti, en la práctica <strong>apenas conservamos datos personales que podamos identificar contigo</strong>.
-            Para cualquier solicitud o reclamación, usa el canal de contacto indicado arriba; también puedes reclamar ante
+            Para cualquier solicitud o reclamación, usa el canal de contacto indicado arriba. También puedes reclamar ante
             la Agencia Española de Protección de Datos (AEPD).
           </p>
         </Section>
@@ -105,10 +105,10 @@ export function Privacy() {
         <Section title="Menores, cambios y vigencia">
           <p>
             El servicio no está dirigido específicamente a menores ni recopila datos de forma consciente sobre ellos.
-            Podemos actualizar esta política para reflejar mejoras o cambios legales; la versión vigente es siempre la
+            Podemos actualizar esta política para reflejar mejoras o cambios legales, y la versión vigente es siempre la
             publicada aquí.
           </p>
-          <p className="pt-2 font-mono text-xs text-graphite">Última actualización: {UPDATED}.</p>
+          <p className="pt-2 font-mono text-xs text-graphite">Última actualización en {UPDATED}.</p>
         </Section>
       </Prose>
     </>
