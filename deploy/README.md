@@ -60,15 +60,22 @@ cualquier motivo, vuelve a ejecutarlo.
 
 ## Gestión con PM2
 
+DocLab usa un **demonio de PM2 propio** (`PM2_HOME=~/.pm2-doclab`) para no mezclarse con el
+ERP. Por eso, para gestionar DocLab a mano hay que apuntar a ese PM2_HOME:
+
 ```bash
-pm2 status            # ver DocLab (y tu ERP) a la vez
+export PM2_HOME="$HOME/.pm2-doclab"
+pm2 status            # solo DocLab (el ERP vive en su propio PM2_HOME)
 pm2 logs doclab       # ver logs en vivo
-pm2 restart doclab    # reiniciar solo la app
+pm2 restart doclab    # reiniciar solo DocLab
 pm2 stop doclab       # parar
 ```
 
-Para que arranque solo al encender el Mac (como un servidor de verdad):
+Sin exportar `PM2_HOME`, `pm2 status` te muestra el demonio por defecto (el del ERP).
+
+Para que DocLab arranque solo al encender el Mac (con su propio PM2_HOME):
 ```bash
+export PM2_HOME="$HOME/.pm2-doclab"
 pm2 save
 pm2 startup           # sigue las instrucciones que imprime
 ```
@@ -76,9 +83,10 @@ El túnel puede dejarse como servicio de `cloudflared` para que también arranqu
 
 ## Convivencia con el ERP
 
-- DocLab usa el puerto **4000**; tu ERP usa el **3001**. No chocan.
-- El **túnel dedicado** evita reiniciar el túnel del ERP al desplegar DocLab.
-- PM2 gestiona ambas apps por separado; parar o reiniciar DocLab no afecta al ERP.
+- **Demonios de PM2 separados.** DocLab usa `~/.pm2-doclab`; el ERP usa el `~/.pm2` por
+  defecto. Así ninguno reinicia al otro aunque usen versiones distintas de PM2.
+- DocLab usa el puerto **4000**; el ERP usa el **3001**. No chocan.
+- **Túnel dedicado** para DocLab, sin tocar el del ERP.
 - La carga de servidor que añade DocLab es mínima (estáticos + proxy de IA ocasional).
 
 ## Notas

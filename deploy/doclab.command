@@ -4,6 +4,11 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."   # raíz del proyecto
 
+# DEMONIO DE PM2 PROPIO Y AISLADO. Sin esto, DocLab comparte ~/.pm2 con el ERP y, al
+# usar versiones de PM2 distintas, cada lanzamiento reinicia el otro (se "mezclan").
+# Con un PM2_HOME dedicado, DocLab tiene su propio demonio, independiente del ERP.
+export PM2_HOME="$HOME/.pm2-doclab"
+
 echo "---------------------------------------------------------"
 echo "🚀 Arrancando DocLab en tu Mac..."
 echo "---------------------------------------------------------"
