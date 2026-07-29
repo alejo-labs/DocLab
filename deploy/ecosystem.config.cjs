@@ -14,11 +14,16 @@ module.exports = {
     {
       name: 'doclab',
       cwd: path.join(ROOT, 'backend'),
-      script: path.join(ROOT, 'backend', 'dist', 'index.js'),
+      // Script RELATIVO al cwd, no absoluto. Si la ruta del proyecto tiene espacios
+      // (p. ej. "PDF Proyect"), un script absoluto rompe el arranque en PM2 (lo parte
+      // por el espacio). Con cwd + script relativo se ejecuta "node dist/index.js".
+      script: 'dist/index.js',
+      interpreter: 'node',
       env: {
         NODE_ENV: 'production',
         PORT: '4000',
         SERVE_STATIC: 'true',
+        // STATIC_DIR se pasa como variable de entorno (Node maneja bien los espacios).
         STATIC_DIR: path.join(ROOT, 'frontend', 'dist'),
       },
       autorestart: true,

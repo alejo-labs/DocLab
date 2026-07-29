@@ -18,19 +18,30 @@ echo "🏗️  Construyendo frontend (producción)..."
 echo "🏗️  Construyendo backend..."
 ( cd backend && npm run build )
 
+# Detectar comando PM2 (usar npx pm2 si no está instalado de forma global)
+PM2_CMD="pm2"
+if ! command -v pm2 &> /dev/null; then
+  echo "ℹ️  PM2 no está instalado globalmente. Usando 'npx pm2'..."
+  PM2_CMD="npx pm2"
+fi
+
 echo "📡 Arrancando/recargando con PM2..."
-pm2 startOrReload deploy/ecosystem.config.cjs --update-env
-pm2 save
+$PM2_CMD startOrReload deploy/ecosystem.config.cjs --update-env
+$PM2_CMD save
 
 echo "---------------------------------------------------------"
 echo "✅ DocLab en marcha en http://localhost:4000  (PM2: 'doclab')"
-echo "   Logs:   pm2 logs doclab      Estado: pm2 status"
+echo "   Logs:   $PM2_CMD logs doclab      Estado: $PM2_CMD status"
 echo "---------------------------------------------------------"
 
 CONFIG="deploy/cloudflared.yml"
+if [ ! -f "$CONFIG" ] && [ -f "$HOME/.cloudflared/pdf-config.yml" ]; then
+  CONFIG="$HOME/.cloudflared/pdf-config.yml"
+fi
+
 if [ -f "$CONFIG" ]; then
   echo "🌐 Abriendo túnel de Cloudflare..."
-  cloudflared tunnel --config "$CONFIG" run
+  cloudflared tunnel --config "$CONFIG" run doclab-pdf
 else
   echo "ℹ️  Túnel aún sin configurar. Cuando tengas el dominio, crea '$CONFIG'"
   echo "    siguiendo deploy/README.md. La app ya está corriendo en http://localhost:4000."
