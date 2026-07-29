@@ -37,7 +37,9 @@ export const spaSecurityHeaders: RequestHandler = helmet({
       childSrc: ["'self'", 'blob:'],
       styleSrc: ["'self'", "'unsafe-inline'"],
       imgSrc: ["'self'", 'data:', 'blob:'],
-      fontSrc: ["'self'"],
+      // data: permite las fuentes pequeñas incrustadas por Vite (base64) y las que usa
+      // pdf.js al renderizar. Es contenido propio, no orígenes externos.
+      fontSrc: ["'self'", 'data:'],
       connectSrc: ["'self'"],
       objectSrc: ["'none'"],
       baseUri: ["'none'"],
