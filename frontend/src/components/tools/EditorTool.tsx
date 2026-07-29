@@ -616,6 +616,9 @@ export function EditorTool(_props: ToolEngineProps) {
               const hPx = page.heightPt * s;
               const pageAnns = annotations.filter((a) => a.page === pageIndex);
               const cursor = tool === 'text' ? 'text' : tool === 'draw' || tool === 'highlight' || tool === 'shape' ? 'crosshair' : tool === 'eraser' ? 'cell' : 'default';
+              // Táctil: con herramientas de dibujo el dedo debe DIBUJAR (no desplazar la
+              // página); en modo selección se permite el scroll vertical para navegar el PDF.
+              const touchAction = tool === 'draw' || tool === 'highlight' || tool === 'shape' || tool === 'eraser' ? 'none' : 'pan-y';
               return (
                 <div key={page.pageNumber} ref={(el) => { pageRefs.current[pageIndex] = el; }} data-page-idx={pageIndex} className="relative max-w-full shadow-[0_4px_24px_-12px_rgba(20,22,27,0.3)]" style={{ width: wPx, height: hPx }}>
                   <img src={page.dataUrl} alt={`Página ${page.pageNumber}`} className="absolute inset-0 h-full w-full" />
@@ -645,7 +648,7 @@ export function EditorTool(_props: ToolEngineProps) {
                   </svg>
 
                   {/* Capa de captura (debajo de los elementos: clic en vacío = lazo/deseleccionar) */}
-                  <div className="absolute inset-0" style={{ cursor, pointerEvents: 'auto' }} onPointerDown={(e) => onLayerDown(e, pageIndex)} onPointerMove={(e) => onLayerMove(e, pageIndex)} onPointerUp={onLayerUp} onPointerLeave={() => setGhost(null)} />
+                  <div className="absolute inset-0" style={{ cursor, pointerEvents: 'auto', touchAction }} onPointerDown={(e) => onLayerDown(e, pageIndex)} onPointerMove={(e) => onLayerMove(e, pageIndex)} onPointerUp={onLayerUp} onPointerLeave={() => setGhost(null)} />
 
                   {/* Fantasma de colocación (herramienta Texto) */}
                   {tool === 'text' && ghost && ghost.page === pageIndex && (

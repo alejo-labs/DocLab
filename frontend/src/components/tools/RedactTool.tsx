@@ -117,7 +117,7 @@ function RedactCanvas({ bytes, boxes, setBoxes, draft, setDraft, style, onRemove
           <div key={page.pageNumber} className="relative shadow-[0_4px_24px_-12px_rgba(20,22,27,0.3)]" style={{ width: page.widthPt * s, height: page.heightPt * s }}>
             <img src={page.dataUrl} alt={`Página ${page.pageNumber}`} className="block size-full select-none" draggable={false} />
             <div
-              className="absolute inset-0 cursor-crosshair"
+              className="absolute inset-0 cursor-crosshair touch-none"
               onPointerDown={(e) => { (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId); const p = local(e, s); setDraft({ page: pageIndex, x: p.x, y: p.y, w: 0, h: 0 }); }}
               onPointerMove={(e) => { if (!draft || draft.page !== pageIndex) return; const p = local(e, s); setDraft({ ...draft, w: p.x - draft.x, h: p.y - draft.y }); }}
               onPointerUp={() => {
@@ -149,7 +149,7 @@ function RedactBoxView({ b, s, style, onRemove, onMove }: BoxViewProps) {
   const drag = useRef<{ px: number; py: number; x: number; y: number } | null>(null);
   return (
     <div
-      className={`group absolute cursor-move ${style === 'white' ? 'border border-line bg-white' : 'bg-ink'}`}
+      className={`group absolute cursor-move touch-none ${style === 'white' ? 'border border-line bg-white' : 'bg-ink'}`}
       style={{ left: b.x * s, top: b.y * s, width: b.w * s, height: b.h * s }}
       onPointerDown={(e) => { if ((e.target as HTMLElement).closest('button')) return; e.stopPropagation(); (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId); drag.current = { px: e.clientX, py: e.clientY, x: b.x, y: b.y }; }}
       onPointerMove={(e) => { if (!drag.current) return; onMove(drag.current.x + (e.clientX - drag.current.px) / s, drag.current.y + (e.clientY - drag.current.py) / s); }}

@@ -118,7 +118,7 @@ export function SelectionFrame({ box, rotation, scale, onStart, onChange, rotata
           onPointerMove={onMove}
           onPointerUp={onUp}
           className="pointer-events-auto absolute left-1/2 size-3 -translate-x-1/2 cursor-grab rounded-full border border-signal bg-paper"
-          style={{ top: -26 }}
+          style={{ top: -26, touchAction: 'none' }}
           title="Rotar"
         />
       )}
@@ -129,7 +129,7 @@ export function SelectionFrame({ box, rotation, scale, onStart, onChange, rotata
           onPointerMove={onMove}
           onPointerUp={onUp}
           className="pointer-events-auto absolute size-2.5 rounded-sm border border-signal bg-paper"
-          style={{ left: `calc(${hd.cx * 100}% - 5px)`, top: `calc(${hd.cy * 100}% - 5px)`, cursor: hd.cursor }}
+          style={{ left: `calc(${hd.cx * 100}% - 5px)`, top: `calc(${hd.cy * 100}% - 5px)`, cursor: hd.cursor, touchAction: 'none' }}
         />
       ))}
     </div>

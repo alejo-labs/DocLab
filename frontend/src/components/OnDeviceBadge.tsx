@@ -19,7 +19,7 @@ export function OnDeviceBadge({ processing, size = 'sm' }: OnDeviceBadgeProps) {
   if (isOnDevice) {
     return (
       <span
-        className={`inline-flex items-center gap-1.5 rounded-full border border-signal/40 bg-signal/10 font-mono font-medium tracking-wide text-signal-deep ${padding}`}
+        className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border border-signal/40 bg-signal/10 font-mono font-medium tracking-wide text-signal-deep ${padding}`}
         title="Este proceso ocurre 100% en tu navegador. Ningún archivo se sube a internet."
       >
         <span className="relative flex size-1.5">
@@ -34,7 +34,7 @@ export function OnDeviceBadge({ processing, size = 'sm' }: OnDeviceBadgeProps) {
 
   return (
     <span
-      className={`inline-flex items-center gap-1.5 rounded-full border border-ember/40 bg-ember/10 font-mono font-medium tracking-wide text-ember ${padding}`}
+      className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border border-ember/40 bg-ember/10 font-mono font-medium tracking-wide text-ember ${padding}`}
       title="Procesado en un contenedor efímero que no almacena tus archivos. Se purga en memoria tras la conversión."
     >
       <Server className="size-3" aria-hidden />
