@@ -1,0 +1,44 @@
+# DocLab
+
+> Herramientas de PDF gratuitas que se procesan en tu navegador. Unir, dividir, comprimir, editar, cifrar, convertir y aplicar OCR a tus PDF sin subir ningún archivo. El procesamiento ocurre al 100% en tu dispositivo con WebAssembly.
+
+DocLab es un proyecto de código abierto y privacy-first. Ninguna herramienta sube tus documentos a un servidor. La única función que usa red es el buscador con IA, al que solo viaja tu frase de búsqueda, nunca un archivo. No hay cuentas, no hay seguimiento y no hay retención de datos.
+
+## Documentación
+
+- [Inicio](https://doclab-pdf.com/): catálogo completo de herramientas.
+- [Cómo funciona](https://doclab-pdf.com/como-funciona): arquitectura on-device, WebAssembly y motores (pdf-lib, pdf.js, qpdf, tesseract.js).
+- [Seguridad](https://doclab-pdf.com/seguridad): modelo de seguridad, Content-Security-Policy, cifrado AES-256 y cero retención.
+- [Sobre DocLab](https://doclab-pdf.com/sobre): qué es el proyecto y sus principios.
+
+## Herramientas
+
+- [Editar PDF](https://doclab-pdf.com/h/editar-pdf): escribe texto, dibuja, resalta e inserta imágenes.
+- [Formularios PDF](https://doclab-pdf.com/h/formularios-pdf): rellena o diseña formularios.
+- [Marca de agua](https://doclab-pdf.com/h/marca-de-agua): estampa texto sobre todas las páginas.
+- [Editar metadatos](https://doclab-pdf.com/h/metadatos-pdf): cambia título, autor y palabras clave.
+- [Unir PDF](https://doclab-pdf.com/h/unir-pdf): combina varios PDF en uno.
+- [Dividir PDF](https://doclab-pdf.com/h/dividir-pdf): separa un PDF por rangos o páginas.
+- [Extraer páginas](https://doclab-pdf.com/h/extraer-paginas): saca páginas concretas a un nuevo PDF.
+- [Organizar páginas](https://doclab-pdf.com/h/organizar-pdf): reordena, rota o elimina páginas arrastrando.
+- [Rotar PDF](https://doclab-pdf.com/h/rotar-pdf): gira páginas o el documento entero.
+- [Eliminar páginas](https://doclab-pdf.com/h/eliminar-paginas): quita páginas concretas.
+- [Números de página](https://doclab-pdf.com/h/numeros-de-pagina): añade numeración con formato y posición.
+- [Varias páginas por hoja](https://doclab-pdf.com/h/varias-paginas-por-hoja): 2, 4, 6 o 9 páginas por hoja para imprimir.
+- [Comprimir PDF](https://doclab-pdf.com/h/comprimir-pdf): reduce el tamaño recomprimiendo imágenes.
+- [Proteger PDF](https://doclab-pdf.com/h/proteger-pdf): contraseña y permisos con cifrado AES-256.
+- [Desbloquear PDF](https://doclab-pdf.com/h/desbloquear-pdf): quita la contraseña (debes conocerla).
+- [Sanear PDF](https://doclab-pdf.com/h/sanear-pdf): elimina JavaScript, adjuntos y metadatos.
+- [Censurar PDF](https://doclab-pdf.com/h/censurar-pdf): oculta datos sensibles de forma irreversible.
+- [Comparar PDF](https://doclab-pdf.com/h/comparar-pdf): resalta los cambios de texto entre dos PDF.
+- [JPG a PDF](https://doclab-pdf.com/h/jpg-a-pdf): crea un PDF a partir de imágenes.
+- [PDF a JPG](https://doclab-pdf.com/h/pdf-a-jpg): convierte las páginas en imágenes JPG.
+- [PDF a PNG](https://doclab-pdf.com/h/pdf-a-png): convierte las páginas en imágenes PNG.
+- [OCR / PDF buscable](https://doclab-pdf.com/h/ocr-pdf): reconoce el texto de un PDF escaneado.
+- [PDF a Texto](https://doclab-pdf.com/h/pdf-a-texto): extrae el texto de un PDF.
+
+## Legal
+
+- [Privacidad](https://doclab-pdf.com/privacidad): qué datos se tratan (y cuáles no).
+- [Cookies](https://doclab-pdf.com/cookies): sin rastreadores; solo almacenamiento local técnico.
+- [Aviso legal](https://doclab-pdf.com/aviso-legal): condiciones de uso.
