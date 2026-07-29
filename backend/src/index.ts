@@ -4,8 +4,10 @@ import { config } from './config.js';
 const app = createApp();
 
 const server = app.listen(config.PORT, () => {
-  console.log(`🚀 DocLab API escuchando en http://localhost:${config.PORT}`);
+  const what = config.SERVE_STATIC ? 'DocLab (web + API)' : 'DocLab API';
+  console.log(`🚀 ${what} escuchando en http://localhost:${config.PORT}`);
   console.log(`🔒 Orígenes CORS permitidos: ${config.CORS_ORIGINS.join(', ')}`);
+  console.log(`🤖 Buscador con IA: ${config.GEMINI_API_KEY ? 'activo' : 'desactivado (sin GEMINI_API_KEY)'}`);
 });
 
 // Timeout de petición para liberar conexiones colgadas.

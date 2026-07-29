@@ -1,7 +1,7 @@
 {
   "name": "doclab-backend",
   "version": "1.0.0",
-  "description": "Backend API de DocLab. Orquesta conversiones de Office con Gotenberg de forma segura y efímera.",
+  "description": "Backend mínimo de DocLab. Sirve el buscador con IA (opcional) y, en despliegue nativo, la SPA ya compilada.",
   "main": "dist/index.js",
   "type": "module",
   "scripts": {

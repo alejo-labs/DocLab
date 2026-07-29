@@ -56,6 +56,9 @@ yarn-error.log*
 .agents/
 skills-lock.json
 
+# Config real del túnel de Cloudflare (rutas/credenciales locales). Se versiona la plantilla.
+/deploy/cloudflared.yml
+
 # Documentación interna de desarrollo (informes/planes): NO se publica en el repo,
 # se conserva solo en local. GitHub debe mostrar únicamente el código.
 /INFORME-*.md

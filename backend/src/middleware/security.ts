@@ -22,6 +22,42 @@ export const securityHeaders: RequestHandler = helmet({
   referrerPolicy: { policy: 'no-referrer' },
 });
 
+/**
+ * Cabeceras para cuando el backend sirve la SPA (despliegue nativo, sin nginx). Replica
+ * la CSP de `frontend/nginx.conf`: todo desde el propio origen, con `'wasm-unsafe-eval'`
+ * para compilar el WebAssembly propio (qpdf/tesseract) y `blob:` para los workers.
+ */
+export const spaSecurityHeaders: RequestHandler = helmet({
+  contentSecurityPolicy: {
+    useDefaults: false,
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", "'wasm-unsafe-eval'"],
+      workerSrc: ["'self'", 'blob:'],
+      childSrc: ["'self'", 'blob:'],
+      styleSrc: ["'self'", "'unsafe-inline'"],
+      imgSrc: ["'self'", 'data:', 'blob:'],
+      fontSrc: ["'self'"],
+      connectSrc: ["'self'"],
+      objectSrc: ["'none'"],
+      baseUri: ["'none'"],
+      formAction: ["'self'"],
+      frameAncestors: ["'none'"],
+      upgradeInsecureRequests: [],
+    },
+  },
+  crossOriginResourcePolicy: { policy: 'same-origin' },
+  crossOriginOpenerPolicy: { policy: 'same-origin' },
+  referrerPolicy: { policy: 'no-referrer' },
+  xFrameOptions: { action: 'deny' },
+});
+
+/** Permissions-Policy (helmet no la incluye). Desactiva APIs sensibles del navegador. */
+export const permissionsPolicy: RequestHandler = (_req, res, next) => {
+  res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=(), usb=(), payment=(), browsing-topics=()');
+  next();
+};
+
 /** CORS restringido a la allowlist de orígenes (config por env). */
 const corsOptions: CorsOptions = {
   origin(origin, callback) {

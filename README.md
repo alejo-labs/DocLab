@@ -80,6 +80,13 @@ cd backend && npm install && npm run dev
 
 Scripts útiles. En frontend, `npm run build`, `npm run lint` y `npm test`. En backend, `npm run typecheck` y `npm test`.
 
+## Despliegue
+
+Dos opciones:
+
+- **Nativo con PM2** (recomendado para un servidor propio). El backend Node sirve la SPA compilada y la API en un puerto, y Cloudflare lo publica por un túnel. Guía en [deploy/README.md](deploy/README.md); lanzador de un clic en [deploy/doclab.command](deploy/doclab.command).
+- **Docker**. Stack de contenedores (Nginx + backend) con `docker-compose.prod.yml`.
+
 ## Licencia
 
 [MIT](LICENSE) © 2026. Código abierto. Las librerías de terceros conservan sus respectivas licencias.

@@ -38,6 +38,15 @@ const envSchema = z.object({
   // /api/assistant/search responde 503 y el frontend cae a la búsqueda local.
   GEMINI_API_KEY: z.string().optional(),
   GEMINI_MODEL: z.string().default('gemini-3.1-flash-lite'),
+
+  // Servir el frontend ya compilado desde el propio backend (despliegue nativo/PM2,
+  // sin nginx). En el stack Docker esto lo hace nginx, así que se deja en false.
+  SERVE_STATIC: z
+    .string()
+    .default('false')
+    .transform((v) => v === 'true' || v === '1' || v === 'on'),
+  // Ruta al build del frontend. Por defecto se resuelve junto al backend (../frontend/dist).
+  STATIC_DIR: z.string().optional(),
 });
 
 const parsed = envSchema.safeParse(process.env);
