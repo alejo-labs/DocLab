@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" font-family="'Helvetica Neue', Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#171a20" />
+      <stop offset="1" stop-color="#101216" />
+    </linearGradient>
+    <radialGradient id="glow" cx="0.82" cy="0.2" r="0.6">
+      <stop offset="0" stop-color="#0fb5a6" stop-opacity="0.22" />
+      <stop offset="1" stop-color="#0fb5a6" stop-opacity="0" />
+    </radialGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#ffffff" stroke-opacity="0.04" stroke-width="1" />
+    </pattern>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)" />
+  <rect width="1200" height="630" fill="url(#grid)" />
+  <rect width="1200" height="630" fill="url(#glow)" />
+  <rect x="0" y="0" width="1200" height="6" fill="#0fb5a6" />
+
+  <!-- Marca -->
+  <g transform="translate(90, 96)">
+    <rect width="104" height="104" rx="26" fill="#f6f4ef" />
+    <text x="52" y="76" font-size="64" font-weight="700" fill="#14161b" text-anchor="middle">D</text>
+    <circle cx="88" cy="20" r="9" fill="#0fb5a6" />
+  </g>
+  <text x="218" y="150" font-size="40" font-weight="600" fill="#f6f4ef">Doc<tspan fill="#19c2b3">Lab</tspan></text>
+  <text x="220" y="186" font-size="19" letter-spacing="2" fill="#8b93a1">INSTRUMENTOS DE PDF · LOCAL-FIRST</text>
+
+  <!-- Titular -->
+  <text x="90" y="330" font-size="66" font-weight="700" fill="#f6f4ef">Tus PDF, sin salir</text>
+  <text x="90" y="410" font-size="66" font-weight="700" fill="#f6f4ef">de tu <tspan fill="#19c2b3">navegador</tspan>.</text>
+
+  <!-- Subtítulo -->
+  <text x="92" y="474" font-size="26" fill="#aab1bd">Unir, comprimir, cifrar, editar y OCR, 100% en tu dispositivo.</text>
+
+  <!-- Píldoras -->
+  <g transform="translate(90, 520)" font-size="20" font-weight="600">
+    <g>
+      <rect width="250" height="52" rx="26" fill="#0fb5a6" fill-opacity="0.12" stroke="#0fb5a6" stroke-opacity="0.4" />
+      <circle cx="30" cy="26" r="6" fill="#19c2b3" />
+      <text x="48" y="33" fill="#19c2b3">Sin subir archivos</text>
+    </g>
+    <g transform="translate(272, 0)">
+      <rect width="238" height="52" rx="26" fill="#ffffff" fill-opacity="0.06" stroke="#ffffff" stroke-opacity="0.14" />
+      <text x="28" y="33" fill="#e6e8ec">Sin cuentas · sin rastreo</text>
+    </g>
+  </g>
+</svg>

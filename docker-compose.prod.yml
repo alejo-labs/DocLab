@@ -1,0 +1,56 @@
+# DocLab — Stack de PRODUCCIÓN.
+# Arquitectura: el túnel de Cloudflare apunta SOLO a Nginx (puerto 8088 en
+# localhost). Nginx sirve la SPA y hace de reverse-proxy de /api hacia el backend
+# (solo el buscador IA). El backend NO publica puertos: solo es accesible dentro de
+# la red interna de Docker. Así, la única superficie expuesta a internet es Nginx.
+# Nota: todo el procesamiento de PDF ocurre en el navegador (local-first); el backend
+# es opcional y solo sirve la búsqueda con IA (Gemini).
+#
+# Uso:
+#   PUBLIC_ORIGIN=https://doclab-pdf.com docker compose -f docker-compose.prod.yml up -d --build
+
+services:
+  frontend:
+    build: ./frontend
+    container_name: doclab_frontend
+    # Solo este servicio se expone, y únicamente a localhost (lo consume el túnel).
+    ports:
+      - "127.0.0.1:8088:8080"
+    depends_on:
+      - backend
+    networks:
+      - doclab_internal
+    restart: unless-stopped
+    read_only: true
+    tmpfs:
+      - /tmp
+      - /var/cache/nginx
+      - /var/run
+    security_opt:
+      - no-new-privileges:true
+
+  backend:
+    build: ./backend
+    container_name: doclab_backend
+    environment:
+      NODE_ENV: production
+      PORT: 4000
+      # Debe incluir el origen público real (mismo origen vía Nginx).
+      CORS_ORIGINS: ${PUBLIC_ORIGIN:-http://localhost:8088}
+      # Opcional: buscador con IA (Gemini). Sin clave, el frontend usa la búsqueda local.
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+    networks:
+      - doclab_internal
+    restart: unless-stopped
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    mem_limit: 512m
+
+networks:
+  doclab_internal:
+    driver: bridge

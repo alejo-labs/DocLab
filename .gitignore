@@ -1,0 +1,67 @@
+# Dependencias de paquetes
+node_modules/
+/frontend/node_modules/
+/backend/node_modules/
+
+# Directorios de producción y compilación
+dist/
+/frontend/dist/
+/backend/dist/
+build/
+
+# Entornos y variables de configuración local
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.env
+
+# Archivos de sistema y editores
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+.idea/
+.vscode/
+*.suo
+*.sw?
+
+# Logs de error y ejecución
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.eslintcache
+
+# Archivos temporales (DocLab NO escribe archivos a disco; esto es defensa en profundidad)
+/backend/uploads/
+/backend/temp/
+*.pdf.tmp
+*.pdf.ocr
+*.log
+
+# Salida de compilación de TypeScript
+/backend/dist/
+*.tsbuildinfo
+
+# Modelos de OCR (tesseract) sueltos: se generan con `npm run setup:ocr`, no se versionan.
+/frontend/eng.traineddata
+*.traineddata
+
+# PDFs de prueba/scratch (fixtures locales, no forman parte del producto).
+/pdf_pruebas/
+
+# Artefactos del harness de Claude Code (no forman parte del proyecto).
+.agents/
+skills-lock.json
+
+# Config real del túnel de Cloudflare (rutas/credenciales locales). Se versiona la plantilla.
+/deploy/cloudflared.yml
+
+# Documentación interna de desarrollo (informes/planes): NO se publica en el repo,
+# se conserva solo en local. GitHub debe mostrar únicamente el código.
+/INFORME-*.md
+/docs/
+/cloudflare-tunnel.md
+/*.txt

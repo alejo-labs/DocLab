@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Las páginas de herramientas (/h/…) son descubribles por los rastreadores desde el
+     enlazado interno de la portada. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://doclab-pdf.com/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://doclab-pdf.com/como-funciona</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://doclab-pdf.com/seguridad</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://doclab-pdf.com/sobre</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://doclab-pdf.com/privacidad</loc><changefreq>yearly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://doclab-pdf.com/cookies</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://doclab-pdf.com/aviso-legal</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+</urlset>

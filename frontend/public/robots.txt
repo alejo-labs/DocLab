@@ -1,0 +1,5 @@
+# DocLab — robots.txt
+User-agent: *
+Allow: /
+
+Sitemap: https://doclab-pdf.com/sitemap.xml

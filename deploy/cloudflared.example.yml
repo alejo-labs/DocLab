@@ -1,0 +1,14 @@
+# Túnel de Cloudflare DEDICADO a DocLab (recomendado para no tocar el túnel del ERP).
+# Copia este archivo a deploy/cloudflared.yml y ajusta los valores.
+#
+#   cp deploy/cloudflared.example.yml deploy/cloudflared.yml
+#
+# Sustituye TU_USUARIO, el UUID y el dominio por los tuyos (ver deploy/README.md).
+
+tunnel: doclab
+credentials-file: /Users/TU_USUARIO/.cloudflared/UUID_DEL_TUNEL.json
+
+ingress:
+  - hostname: doclab-pdf.com
+    service: http://localhost:4000
+  - service: http_status:404
