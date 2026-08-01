@@ -78,9 +78,20 @@ export function PageLightbox({ pages, initialIndex, renderHd, onClose }: PageLig
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
-      if (e.key === 'Escape') onClose();
-      else if (e.key === 'ArrowLeft') go(-1);
-      else if (e.key === 'ArrowRight') go(1);
+      if (e.key === 'Escape') { onClose(); return; }
+      if (e.key === 'ArrowLeft') { go(-1); return; }
+      if (e.key === 'ArrowRight') { go(1); return; }
+      if (e.key === 'Tab') {
+        // Trap de foco: el tabulador circula solo por los controles del modal.
+        const nodes = overlayRef.current?.querySelectorAll<HTMLElement>('button:not([disabled])');
+        if (!nodes || nodes.length === 0) return;
+        const first = nodes[0]!;
+        const last = nodes[nodes.length - 1]!;
+        const activeEl = document.activeElement as HTMLElement | null;
+        const inside = overlayRef.current?.contains(activeEl);
+        if (e.shiftKey && (activeEl === first || !inside)) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && (activeEl === last || !inside)) { e.preventDefault(); first.focus(); }
+      }
     }
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
@@ -127,13 +138,19 @@ export function PageLightbox({ pages, initialIndex, renderHd, onClose }: PageLig
 
         {/* Imagen */}
         <div className="relative flex items-center justify-center">
-          <img
-            src={displayUrl}
-            alt={page.label}
-            className="max-h-[82dvh] max-w-[90vw] rounded-md bg-white object-contain shadow-2xl sm:max-h-[85dvh]"
-            draggable={false}
-          />
-          {loadingHd && !hdUrl && (
+          {displayUrl ? (
+            <img
+              src={displayUrl}
+              alt={page.label}
+              className="max-h-[82dvh] max-w-[90vw] rounded-md bg-white object-contain shadow-2xl sm:max-h-[85dvh]"
+              draggable={false}
+            />
+          ) : (
+            <div className="grid h-[60dvh] w-[42vw] max-w-[520px] place-items-center rounded-md bg-white/5">
+              <Loader2 className="size-8 animate-spin text-paper/70" />
+            </div>
+          )}
+          {displayUrl && loadingHd && !hdUrl && (
             <span className="absolute bottom-3 right-3 grid size-7 place-items-center rounded-full bg-black/60 text-white">
               <Loader2 className="size-4 animate-spin" />
             </span>

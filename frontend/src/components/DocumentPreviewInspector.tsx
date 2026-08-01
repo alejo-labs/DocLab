@@ -34,7 +34,7 @@ export function DocumentPreviewInspector({ bytes, fileName, onClear, width = 340
       <div className="w-full space-y-2 rounded-lg border border-line/70 bg-paper/60 p-3 text-xs">
         <div className="flex items-center justify-between">
           <span className="font-mono text-graphite flex items-center gap-1">
-            <HardDrive className="size-3" /> Fichero:
+            <HardDrive className="size-3" /> Fichero
           </span>
           <span className="font-mono font-medium text-ink truncate max-w-[200px]" title={fileName}>
             {fileName}.pdf
@@ -43,7 +43,7 @@ export function DocumentPreviewInspector({ bytes, fileName, onClear, width = 340
 
         <div className="flex items-center justify-between">
           <span className="font-mono text-graphite flex items-center gap-1">
-            <Layers className="size-3" /> Tamaño:
+            <Layers className="size-3" /> Tamaño
           </span>
           <span className="font-mono font-medium text-ink">
             {formatBytes(bytes.byteLength)}
@@ -52,7 +52,7 @@ export function DocumentPreviewInspector({ bytes, fileName, onClear, width = 340
 
         <div className="pt-1 flex justify-between items-center border-t border-line/40">
           <span className="font-mono text-graphite text-[11px] flex items-center gap-1">
-            <ShieldCheck className="size-3 text-signal-deep" /> Seguridad:
+            <ShieldCheck className="size-3 text-signal-deep" /> Seguridad
           </span>
           <OnDeviceBadge processing="on-device" size="sm" />
         </div>

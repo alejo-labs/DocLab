@@ -1,5 +1,5 @@
 import type { CSSProperties } from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { LayoutGrid, Grid3X3 } from 'lucide-react';
 
 /* ── Heurística de auto-sizing ──────────────────────────────────────────────── */
@@ -26,11 +26,16 @@ export function useThumbnailSize(pageCount: number) {
   const [manualSize, setManualSize] = useState<number | null>(null);
   const autoSize = computeAutoSize(pageCount);
 
-  // Cuando cambia el número de páginas de forma significativa, reseteamos el
-  // ajuste manual para que el auto-sizing vuelva a actuar.
+  // Al cargar un documento (0 → N) o vaciarlo (N → 0) volvemos al auto-sizing,
+  // descartando el ajuste manual del documento anterior.
+  const wasEmpty = useRef(pageCount === 0);
   useEffect(() => {
-    setManualSize(null);
-  }, [pageCount === 0]); // solo al pasar de 0 → N o N → 0
+    const isEmpty = pageCount === 0;
+    if (isEmpty !== wasEmpty.current) {
+      wasEmpty.current = isEmpty;
+      setManualSize(null);
+    }
+  }, [pageCount]);
 
   const thumbSize = manualSize ?? autoSize;
 

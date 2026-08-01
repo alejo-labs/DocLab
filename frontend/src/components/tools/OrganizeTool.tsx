@@ -9,7 +9,7 @@ import { ThumbnailSizeBar, useThumbnailSize } from '../ThumbnailSizeBar';
 import { PageLightbox, LightboxTrigger, type LightboxPage } from '../PageLightbox';
 import { looksLikePdf, readFileBytes } from '../../lib/files';
 import { usePdfThumbnails } from '../../lib/pdf/usePdfThumbnails';
-import { createPdfLoadingTask, renderPageThumbnail } from '../../lib/pdf/pdfjs';
+import { useHdRenderer } from '../../lib/pdf/useHdRenderer';
 import { normalizeRotation, rebuildPdf, type PagePlan } from '../../lib/pdf/organize';
 import { stripExtension } from '../../lib/pdf/download';
 import { takeHandoff } from '../../lib/handoff';
@@ -157,21 +157,13 @@ export function OrganizeTool({ preset }: ToolEngineProps) {
     initializedRef.current = null;
   }
 
-  // ── Lightbox HD: crea tarea temporal desde bytes ──
-  const renderHd = useCallback(async (idx: number) => {
+  // ── Lightbox HD: proxy PDF cacheado mientras el lightbox está abierto ──
+  const renderPage = useHdRenderer(bytes, lightboxIndex !== null);
+  const renderHd = useCallback((idx: number) => {
     const p = pages[idx];
-    if (!p || !bytes) throw new Error('Datos no disponibles');
-    const task = createPdfLoadingTask(bytes);
-    try {
-      const pdf = await task.promise;
-      const thumb = await renderPageThumbnail(pdf, p.sourceIndex + 1, 900);
-      await task.destroy();
-      return thumb.dataUrl;
-    } catch {
-      await task.destroy().catch(() => {});
-      throw new Error('No se pudo renderizar');
-    }
-  }, [pages, bytes]);
+    if (!p) throw new Error('Página no encontrada');
+    return renderPage(p.sourceIndex + 1);
+  }, [renderPage, pages]);
 
   const lightboxPages: LightboxPage[] = pages.map((p) => ({
     label: `Página ${p.sourceIndex + 1}`,

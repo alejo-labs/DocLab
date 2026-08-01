@@ -8,7 +8,7 @@ import { ThumbnailSizeBar, useThumbnailSize } from '../ThumbnailSizeBar';
 import { PageLightbox, LightboxTrigger, type LightboxPage } from '../PageLightbox';
 import { looksLikePdf, readFileBytes } from '../../lib/files';
 import { usePdfThumbnails } from '../../lib/pdf/usePdfThumbnails';
-import { createPdfLoadingTask, renderPageThumbnail } from '../../lib/pdf/pdfjs';
+import { useHdRenderer } from '../../lib/pdf/useHdRenderer';
 import { extractPages, parsePageRanges } from '../../lib/pdf/split';
 import { stripExtension } from '../../lib/pdf/download';
 import { takeHandoff } from '../../lib/handoff';
@@ -98,20 +98,9 @@ export function SplitTool({ preset }: ToolEngineProps) {
     setLightboxIndex(null);
   }
 
-  // ── Lightbox HD: crea tarea temporal desde bytes ──
-  const renderHd = useCallback(async (idx: number) => {
-    if (!bytes) throw new Error('Datos no disponibles');
-    const task = createPdfLoadingTask(bytes);
-    try {
-      const pdf = await task.promise;
-      const thumb = await renderPageThumbnail(pdf, idx + 1, 900);
-      await task.destroy();
-      return thumb.dataUrl;
-    } catch {
-      await task.destroy().catch(() => {});
-      throw new Error('No se pudo renderizar');
-    }
-  }, [bytes]);
+  // ── Lightbox HD: proxy PDF cacheado mientras el lightbox está abierto ──
+  const renderPage = useHdRenderer(bytes, lightboxIndex !== null);
+  const renderHd = useCallback((idx: number) => renderPage(idx + 1), [renderPage]);
 
   const lightboxPages: LightboxPage[] = thumbnails.map((t) => ({
     label: `Página ${t.pageNumber}`,

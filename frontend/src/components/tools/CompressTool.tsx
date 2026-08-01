@@ -90,11 +90,11 @@ export function CompressTool(_props: ToolEngineProps) {
           <Info className="mt-0.5 size-4 shrink-0 text-signal-deep" aria-hidden />
           <span>
             {level === 'screen' ? (
-              <><strong>Máxima</strong>: convierte todas las páginas a imagen para la mayor reducción posible
-              (el <strong>texto deja de ser seleccionable</strong>). Ideal para enviar o archivar.</>
+              <>La opción <strong>Máxima</strong> convierte todas las páginas a imagen para la mayor reducción
+              posible (el <strong>texto deja de ser seleccionable</strong>). Ideal para enviar o archivar.</>
             ) : (
               <>Las páginas de <strong>texto se conservan intactas</strong> (seleccionables) y solo se
-              recomprimen/reducen las <strong>imágenes</strong> embebidas y los escaneados.</>
+              recomprimen y reducen las <strong>imágenes</strong> embebidas y los escaneados.</>
             )}{' '}Todo ocurre íntegro en tu navegador.
           </span>
         </div>
