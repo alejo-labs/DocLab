@@ -90,7 +90,7 @@ function ToolPageContent() {
         </div>
       )}
 
-      <div className={hasActiveDoc ? 'mt-2 lg:flex-1 lg:min-h-0 lg:overflow-hidden' : 'mt-8'}>
+      <div className={hasActiveDoc ? 'mt-2 lg:flex-1 lg:min-h-0 lg:overflow-y-auto' : 'mt-8'}>
         {ToolEngine ? (
           <ErrorBoundary label={tool.name} resetKey={tool.slug}>
             <Suspense fallback={<LoadingFacts label={`Preparando «${tool.name}»…`} />}>
