@@ -10,7 +10,7 @@ import { FileDropzone } from '../FileDropzone';
 import { Button, ErrorAlert } from '../ui';
 import { ResultPreview } from '../ResultPreview';
 import { ColorControl, BrushSlider, LabeledSlider, ToggleIcon, Segmented, ZoomControls } from '../editor-kit/controls';
-import { SignatureModal } from '../editor-kit/SignatureModal';
+import { SignatureModal, type SignatureResult } from '../editor-kit/SignatureModal';
 import { SelectionFrame } from '../editor-kit/SelectionFrame';
 import { detectImageType, looksLikePdf, readFileBytes } from '../../lib/files';
 import { stripExtension } from '../../lib/pdf/download';
@@ -40,7 +40,7 @@ const STAMPS: { label: string; color: string }[] = [
 
 type Draft =
   | { kind: 'draw'; page: number; color: string; width: number; opacity: number; points: Point[] }
-  | { kind: 'rect-like'; tool: 'highlight' | 'shape'; shape?: ShapeKind; page: number; x: number; y: number; w: number; h: number };
+  | { kind: 'rect-like'; tool: 'highlight' | 'shape' | 'signature'; shape?: ShapeKind; page: number; x: number; y: number; w: number; h: number };
 
 const uid = () => crypto.randomUUID();
 
@@ -177,6 +177,9 @@ export function EditorTool(_props: ToolEngineProps) {
   const [ghost, setGhost] = useState<{ page: number; x: number; y: number } | null>(null);
   const [draft, setDraft] = useState<Draft | null>(null);
   const [signOpen, setSignOpen] = useState(false);
+  // Área (en puntos de PDF) donde se colocará la firma, delimitada por el usuario antes
+  // de abrir el modal de opciones de firma.
+  const [signBox, setSignBox] = useState<{ page: number; x: number; y: number; w: number; h: number } | null>(null);
   const [result, setResult] = useState<ToolResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
@@ -433,17 +436,14 @@ export function EditorTool(_props: ToolEngineProps) {
       setTool('select');
       return;
     }
-    if (tool === 'signature') {
-      setSignOpen(true);
-      return;
-    }
     layer.setPointerCapture(e.pointerId);
     if (tool === 'eraser') {
       erasingRef.current = true;
       eraseAt(pageIndex, p);
     } else if (tool === 'draw') {
       setDraft({ kind: 'draw', page: pageIndex, color, width: strokeWidth, opacity: 1, points: [p] });
-    } else if (tool === 'highlight' || tool === 'shape') {
+    } else if (tool === 'highlight' || tool === 'shape' || tool === 'signature') {
+      // La firma también se dibuja como rectángulo: delimita el área y al soltar se abre el modal.
       setDraft({ kind: 'rect-like', tool, shape: tool === 'shape' ? shapeKind : undefined, page: pageIndex, x: p.x, y: p.y, w: 0, h: 0 });
     }
   }
@@ -479,6 +479,13 @@ export function EditorTool(_props: ToolEngineProps) {
     if (draft.kind === 'draw' && draft.points.length > 1) {
       add({ id: uid(), type: 'draw', page: draft.page, color: draft.color, width: draft.width, opacity: draft.opacity, points: draft.points });
     } else if (draft.kind === 'rect-like' && Math.abs(draft.w) > 4 && Math.abs(draft.h) > 4) {
+      if (draft.tool === 'signature') {
+        // Área delimitada: guárdala y abre el modal de opciones de firma.
+        setSignBox({ page: draft.page, x: Math.min(draft.x, draft.x + draft.w), y: Math.min(draft.y, draft.y + draft.h), w: Math.abs(draft.w), h: Math.abs(draft.h) });
+        setSignOpen(true);
+        setDraft(null);
+        return;
+      }
       const id = uid();
       if (draft.tool === 'highlight') {
         add({ id, type: 'highlight', page: draft.page, x: Math.min(draft.x, draft.x + draft.w), y: Math.min(draft.y, draft.y + draft.h), width: Math.abs(draft.w), height: Math.abs(draft.h), color, opacity: 0.4 });
@@ -511,6 +518,22 @@ export function EditorTool(_props: ToolEngineProps) {
     if (!page) return;
     const height = width / ratio;
     const a: Annotation = { id: uid(), type: 'image', page: 0, x: page.widthPt / 2 - width / 2, y: page.heightPt / 2 - height / 2, width, height, bytes: data, format, opacity: 1, rotation: 0 };
+    add(a);
+    selectOnly(a.id);
+    setTool('select');
+  }
+
+  /** Coloca la firma dentro del área delimitada por el usuario, conservando su proporción y centrada. */
+  function placeSignature(sig: SignatureResult) {
+    const box = signBox;
+    setSignBox(null);
+    if (!box) { insertImage(sig.bytes, sig.format, 180, sig.ratio); return; } // sin área: al centro (fallback)
+    const page = pages[box.page];
+    if (!page) return;
+    const boxRatio = box.w / box.h;
+    const w = sig.ratio > boxRatio ? box.w : box.h * sig.ratio;
+    const h = sig.ratio > boxRatio ? box.w / sig.ratio : box.h;
+    const a: Annotation = { id: uid(), type: 'image', page: box.page, x: box.x + (box.w - w) / 2, y: box.y + (box.h - h) / 2, width: w, height: h, bytes: sig.bytes, format: sig.format, opacity: 1, rotation: 0 };
     add(a);
     selectOnly(a.id);
     setTool('select');
@@ -568,10 +591,10 @@ export function EditorTool(_props: ToolEngineProps) {
     <>
       {signOpen && (
         <SignatureModal
-          onClose={() => setSignOpen(false)}
+          onClose={() => { setSignOpen(false); setSignBox(null); }}
           onConfirm={(sig) => {
             setSignOpen(false);
-            insertImage(sig.bytes, sig.format, 180, sig.ratio);
+            placeSignature(sig);
           }}
         />
       )}
@@ -608,10 +631,10 @@ export function EditorTool(_props: ToolEngineProps) {
               const wPx = Math.round(page.widthPt * s);
               const hPx = Math.round(page.heightPt * s);
               const pageAnns = annotations.filter((a) => a.page === pageIndex);
-              const cursor = tool === 'text' ? 'text' : tool === 'draw' || tool === 'highlight' || tool === 'shape' ? 'crosshair' : tool === 'eraser' ? 'cell' : 'default';
+              const cursor = tool === 'text' ? 'text' : tool === 'draw' || tool === 'highlight' || tool === 'shape' || tool === 'signature' ? 'crosshair' : tool === 'eraser' ? 'cell' : 'default';
               // Táctil: con herramientas de dibujo el dedo debe DIBUJAR (no desplazar la
               // página); en modo selección se permite el scroll vertical para navegar el PDF.
-              const touchAction = tool === 'draw' || tool === 'highlight' || tool === 'shape' || tool === 'eraser' ? 'none' : 'pan-y';
+              const touchAction = tool === 'draw' || tool === 'highlight' || tool === 'shape' || tool === 'signature' || tool === 'eraser' ? 'none' : 'pan-y';
               return (
                 <div key={page.pageNumber} ref={(el) => { pageRefs.current[pageIndex] = el; }} data-page-idx={pageIndex} className="relative shadow-[0_4px_24px_-12px_rgba(20,22,27,0.3)] shrink-0 transition-all duration-75" style={{ width: `${wPx}px`, minWidth: `${wPx}px`, height: `${hPx}px`, minHeight: `${hPx}px` }}>
                   <img src={page.dataUrl} alt={`Página ${page.pageNumber}`} className="absolute inset-0 h-full w-full" />
@@ -625,7 +648,17 @@ export function EditorTool(_props: ToolEngineProps) {
                       <polyline points={draft.points.map((p) => `${p.x * s},${p.y * s}`).join(' ')} fill="none" stroke={draft.color} strokeWidth={draft.width * s} strokeLinecap="round" />
                     )}
                     {draft?.kind === 'rect-like' && draft.page === pageIndex && (
-                      <rect x={Math.min(draft.x, draft.x + draft.w) * s} y={Math.min(draft.y, draft.y + draft.h) * s} width={Math.abs(draft.w) * s} height={Math.abs(draft.h) * s} fill={draft.tool === 'highlight' ? color : 'none'} opacity={draft.tool === 'highlight' ? 0.3 : 1} stroke={draft.tool === 'shape' ? color : 'none'} strokeWidth={1.5} />
+                      <rect
+                        x={Math.min(draft.x, draft.x + draft.w) * s}
+                        y={Math.min(draft.y, draft.y + draft.h) * s}
+                        width={Math.abs(draft.w) * s}
+                        height={Math.abs(draft.h) * s}
+                        fill={draft.tool === 'highlight' ? color : draft.tool === 'signature' ? 'var(--color-signal)' : 'none'}
+                        opacity={draft.tool === 'highlight' ? 0.3 : draft.tool === 'signature' ? 0.08 : 1}
+                        stroke={draft.tool === 'shape' ? color : draft.tool === 'signature' ? 'var(--color-signal)' : 'none'}
+                        strokeWidth={1.5}
+                        strokeDasharray={draft.tool === 'signature' ? '6 4' : undefined}
+                      />
                     )}
                     {/* Guías de alineación (snap) */}
                     {guides && guides.page === pageIndex && guides.vx != null && (
@@ -710,7 +743,7 @@ export function EditorTool(_props: ToolEngineProps) {
             <PanelTool active={tool === 'highlight'} onClick={() => setTool('highlight')} icon={Highlighter} label="Marcar" />
             <PanelTool active={tool === 'shape'} onClick={() => setTool('shape')} icon={Shapes} label="Forma" />
             <PanelTool active={tool === 'image'} onClick={() => { setTool('select'); imageInputRef.current?.click(); }} icon={ImagePlus} label="Imagen" />
-            <PanelTool active={tool === 'signature'} onClick={() => setSignOpen(true)} icon={PenTool} label="Firma" />
+            <PanelTool active={tool === 'signature'} onClick={() => setTool('signature')} icon={PenTool} label="Firma" />
             <PanelTool active={tool === 'stamp'} onClick={() => setTool('stamp')} icon={Stamp} label="Sello" />
             <PanelTool active={tool === 'eraser'} onClick={() => setTool('eraser')} icon={Eraser} label="Goma" />
           </div>
@@ -719,6 +752,12 @@ export function EditorTool(_props: ToolEngineProps) {
 
           {/* Controles contextuales */}
           <div className="space-y-3">
+            {tool === 'signature' && (
+              <div className="flex items-start gap-2 rounded-[var(--radius-instrument)] border border-signal/30 bg-signal/5 px-3 py-2 text-xs text-signal-deep">
+                <PenTool className="mt-0.5 size-3.5 shrink-0" aria-hidden />
+                <span>Dibuja sobre el documento el <strong>área donde irá la firma</strong>. Al soltar se abrirán las opciones de firma.</span>
+              </div>
+            )}
             {tool === 'stamp' && (
               <div className="space-y-2">
                 <p className="font-mono text-xs text-graphite">Elige un sello y se coloca centrado en la página visible.</p>

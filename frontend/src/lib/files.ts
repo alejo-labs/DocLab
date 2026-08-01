@@ -55,6 +55,17 @@ export function dataUrlToBytes(dataUrl: string): Uint8Array {
   return base64ToBytes(comma >= 0 ? dataUrl.slice(comma + 1) : dataUrl);
 }
 
+/**
+ * Lee ancho/alto de un PNG directamente de la cabecera IHDR (síncrono, sin cargar
+ * la imagen). Evita depender de `img.onload`, que puede no dispararse nunca si los
+ * datos están dañados. Devuelve null si no es un PNG válido.
+ */
+export function pngSize(bytes: Uint8Array): { width: number; height: number } | null {
+  if (bytes.length < 24 || bytes[0] !== 0x89 || bytes[1] !== 0x50 || bytes[2] !== 0x4e || bytes[3] !== 0x47) return null;
+  const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+  return { width: view.getUint32(16), height: view.getUint32(20) };
+}
+
 const UNITS = ['B', 'KB', 'MB', 'GB'] as const;
 
 /** Formatea un tamaño en bytes de forma legible. */

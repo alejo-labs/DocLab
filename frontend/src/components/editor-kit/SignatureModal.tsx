@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react';
 import { X, Pen, Type, Upload } from 'lucide-react';
 import { Button } from '../ui';
-import { readFileBytes, detectImageType, bytesToBase64, dataUrlToBytes } from '../../lib/files';
+import { readFileBytes, detectImageType, bytesToBase64, dataUrlToBytes, pngSize } from '../../lib/files';
 
 export interface SignatureResult {
   bytes: Uint8Array;
@@ -105,10 +105,8 @@ export function SignatureModal({ onClose, onConfirm }: { onClose: () => void; on
     const ratio = await new Promise<number>((res) => {
       const img = new Image();
       const url = URL.createObjectURL(new Blob([bytes.slice().buffer]));
-      img.onload = () => {
-        res(img.naturalWidth / img.naturalHeight || 2);
-        URL.revokeObjectURL(url);
-      };
+      img.onload = () => { res(img.naturalWidth / img.naturalHeight || 2); URL.revokeObjectURL(url); };
+      img.onerror = () => { res(2); URL.revokeObjectURL(url); };
       img.src = url;
     });
     onConfirm({ bytes, format: fmt, ratio });
@@ -125,15 +123,13 @@ export function SignatureModal({ onClose, onConfirm }: { onClose: () => void; on
     }
   }
 
-  async function pickSaved(dataUrl: string) {
-    // Decodifica el base64 del data: URL directamente (sin fetch, que la CSP bloquea).
+  function pickSaved(dataUrl: string) {
+    // Decodifica el base64 directamente (sin fetch, que la CSP bloquea) y lee las
+    // dimensiones de la cabecera PNG. Es síncrono, así que onConfirm SIEMPRE se llama
+    // (antes, si `img.onload` no se disparaba, el modal se quedaba abierto).
     const bytes = dataUrlToBytes(dataUrl);
-    const ratio = await new Promise<number>((r) => {
-      const img = new Image();
-      img.onload = () => r(img.naturalWidth / img.naturalHeight || 2);
-      img.src = dataUrl;
-    });
-    onConfirm({ bytes, format: 'png', ratio });
+    const dim = pngSize(bytes);
+    onConfirm({ bytes, format: 'png', ratio: dim ? dim.width / dim.height : 3 });
   }
 
   return (
